@@ -296,22 +296,26 @@
       
     </div>
   </div>
-  <div class="row">
-      <div class="col-sm-12">
-        <div class="form-group">
-            <div class="input-group mb-3">
-              <div class="input-group-prepend">
-                <span class="input-group-text"><strong>Your Total is:</strong></span>
-                <span class="input-group-text">$</span>
-              </div>
-              <input type="text" class="form-control" aria-label="Amount (to the nearest dollar)">
-              <div class="input-group-append">
-                <span class="input-group-text">.00</span>
-              </div>
-            </div>
-        </div>
-      </div>
-  </div>
+  
+  <!-- Order Total -->
+  <fieldset class="form-group">
+        <div class="row">
+            <legend class="col-form-label col-form-label-lg col-sm-6 pt-0"><h3>Your Order Total is:</h3></legend>
+            <div class="col-sm-6">
+                <div class="form-group">
+                    <div class="input-group input-group-lg mb-3">
+                      <div class="input-group-prepend">
+                        <span class="input-group-text">$</span>
+                      </div>
+                      <input type="text" class="form-control" aria-label="Amount (to the nearest dollar)">
+                      <div class="input-group-append">
+                        <span class="input-group-text">.00</span>
+                      </div>
+                    </div>
+                </div>     
+            </div> <!--end of  <div class="col-sm-8"> -->
+        </div>  <!--end of  <div class="row"> -->
+      </fieldset>
   <!-- Billing Information -->
   <label class="control-label" for="billingInfo"><h3>Billing Information</h3></label>
   <form id="billingInfo">  
