@@ -10,6 +10,7 @@
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.0/umd/popper.min.js"></script>
   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.0/js/bootstrap.min.js"></script>
+  <script src="js/script.js"></script>
 
 <!--
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
@@ -21,7 +22,7 @@
       .banner {
           margin: 0 !important;
           padding: 0 !important;
-/*          height: 5% !important;*/
+/*          height: 30% !important;*/
       }
       .nav-link {
           color: tomato !important;
@@ -38,7 +39,7 @@
 <body>
 
 <div class="jumbotron text-center banner" style="margin:0">
-  <img src="images/JoyPeacePink.png" alt="veggiePizza" width="100%"/>
+    <img src="images/JoyPeacePink.png" alt="veggiePizza" width="100%"/>
 </div>
 
 <nav class="navbar navbar-expand-sm bg-dark navbar-dark">
@@ -87,6 +88,7 @@
                 <option value="dorm">dorm</option>
                 <option value="other">other</option>
               </select>
+              <input type="text" class="form-control" id="otherAddressType" placeholder="Address Type ..." >
             </div>
 <!--
           <div class="form-group">
@@ -150,39 +152,47 @@
     <div class="col-sm-6">
       <label for="sizeCost"><h2>Build Your Order</h2></label>
       <form id="order">
-        <div class="form-group">
-            <h5>Dough Options</h5>
-            <div class="radio">
-                <label>       
-                  <input type="radio" name="optdough">&nbsp;Hand Tossed 
-                </label>
-            </div>
-            <div class="radio">
-                <label>
-                  <input type="radio" name="optdough">&nbsp;Thin Crust 
-                </label>
-            </div>
-            <div class="radio disabled">
-                <label>
-                  <input type="radio" name="optdough">&nbsp;New York Style
-                </label>
-            </div>
-            <div class="radio disabled">
-                <label>
-                  <input type="radio" name="optdough">&nbsp;Gluten Free
-                </label>
-            </div>
-        </div>
+        <fieldset class="form-group">
+            <div class="row">
+                <legend class="col-form-label col-sm-4 pt-0"><strong>Dough Options</strong></legend>
+                <div class="col-sm-8">
+                    <div class="form-check">
+                      <input class="form-check-input" type="radio" name="optdough" id="optdough1" value="Hand Tossed">
+                      <label class="form-check-label" for="optdough1">
+                        Hand Tossed
+                      </label>
+                    </div>
+                    <div class="form-check">
+                      <input class="form-check-input" type="radio" name="optdough" id="optdough2" value="Thin Crust">
+                      <label class="form-check-label" for="optdough2">
+                        Thin Crust
+                      </label>
+                    </div>
+                    <div class="form-check">
+                      <input class="form-check-input" type="radio" name="optdough" id="optdough3" value="New York Style">
+                      <label class="form-check-label" for="optdough3">
+                        New York Style
+                      </label>
+                    </div>
+                    <div class="form-check">
+                      <input class="form-check-input" type="radio" name="optdough" id="optdough4" value="Gluten Free">
+                      <label class="form-check-label" for="optdough4">
+                        Gluten Free
+                      </label>
+                    </div>
+                </div> <!--end of  <div class="col-sm-8"> -->
+            </div>  <!--end of  <div class="row"> -->
+        </fieldset>
         
         <div class="form-group">
-            <label for="sizeCost"><h5>Size and Cost</h5></label>
+            <label for="sizeCost"><strong>Size and Cost</strong></label>
             <select class="form-control" id="sizeCost">
               <option>To be filled programmatically...</option>
             </select>
         </div>
         
         <div class="form-group">
-            <label for="optCheese"><h5>Cheese Options</h5></label>
+            <label for="optCheese"><strong>Cheese Options</strong></label>
             <select class="form-control" id="optCheese">
               <option>Light: no charge</option>
               <option>Normal (default): no charge</option>
@@ -192,14 +202,96 @@
         </div>
         
         <div class="form-group">
-            <label for="optSauce"><h5>Sauce Options</h5></label>
+            <label for="optSauce"><strong>Sauce Options</strong></label>
             <select class="form-control" id="optSauce">
               <option>Regular Tomato: no charge</option>
               <option>Hearty Tomato: +$.99</option>
               <option>BBQ Sauce: +$1.99</option>
             </select>
         </div>
-        
+          
+        <fieldset class="form-group">
+            <div class="row">
+                <legend class="col-form-label col-sm-12 pt-0"><strong>Toppings(Each is $.99 extra)</strong></legend>
+            </div>
+            <div class="row">
+                <div class="col-sm-3">
+                    <div class="form-check">
+                      <input class="form-check-input" type="checkbox" name="pepperoni" id="pepperoni" value="pepperoni">
+                      <label class="form-check-label" for="pepperoni">
+                        pepperoni
+                      </label>
+                    </div>
+                    <div class="form-check">
+                      <input class="form-check-input" type="checkbox" name="sausage" id="sausage" value="sausage">
+                      <label class="form-check-label" for="sausage">
+                        sausage
+                      </label>
+                    </div>
+                    <div class="form-check">
+                      <input class="form-check-input" type="checkbox" name="ham" id="ham" value="ham">
+                      <label class="form-check-label" for="ham">
+                        ham
+                      </label>
+                    </div>
+                </div> <!--end of  <div class="col-sm-3"> -->
+                
+                <div class="col-sm-3">
+                     <div class="form-check">
+                      <input class="form-check-input" type="checkbox" name="bacon" id="bacon" value="bacon">
+                      <label class="form-check-label" for="bacon">
+                        bacon
+                      </label>
+                    </div>
+                    <div class="form-check">
+                      <input class="form-check-input" type="checkbox" name="salami" id="salami" value="salami">
+                      <label class="form-check-label" for="salami">
+                        salami
+                      </label>
+                    </div>
+                    <div class="form-check">
+                      <input class="form-check-input" type="checkbox" name="peppers" id="peppers" value="peppers">
+                      <label class="form-check-label" for="peppers">
+                        peppers
+                      </label>
+                    </div>
+                </div> <!--end of  <div class="col-sm-3"> -->
+                <div class="col-sm-3">
+                    <div class="form-check">
+                      <input class="form-check-input" type="checkbox" name="olives" id="olives" value="olives">
+                      <label class="form-check-label" for="olives">
+                        olives
+                      </label>
+                    </div>
+                    <div class="form-check">
+                      <input class="form-check-input" type="checkbox" name="jalapenos" id="jalapenos" value="jalapenos">
+                      <label class="form-check-label" for="jalapenos">
+                        jalapenos
+                      </label>
+                    </div>
+                    <div class="form-check">
+                      <input class="form-check-input" type="checkbox" name="mushrooms" id="mushrooms" value="mushrooms">
+                      <label class="form-check-label" for="mushrooms">
+                        mushrooms
+                      </label>
+                    </div>
+                </div> <!--end of  <div class="col-sm-3"> -->
+                <div class="col-sm-3">
+                    <div class="form-check">
+                      <input class="form-check-input" type="checkbox" name="pineapple" id="pineapple" value="pineapple">
+                      <label class="form-check-label" for="pineapple">
+                        pineapple
+                      </label>
+                    </div>
+                    <div class="form-check">
+                      <input class="form-check-input" type="checkbox" name="onion" id="onion" value="onion">
+                      <label class="form-check-label" for="onion">
+                        onion
+                      </label>
+                    </div>
+                </div> <!--end of  <div class="col-sm-3"> -->
+            </div>  <!--end of  <div class="row"> -->
+        </fieldset>      
       </form>
       
     </div>
