@@ -194,19 +194,19 @@
         <div class="form-group">
             <label for="optCheese"><strong>Cheese Options</strong></label>
             <select class="form-control" id="optCheese">
-              <option>Light: no charge</option>
-              <option>Normal (default): no charge</option>
-              <option>Extra: +$2.99</option>
-              <option>Double: +$3.99</option>
+              <option value="0">Light: no charge</option>
+              <option value="0">Normal (default): no charge</option>
+              <option value="2.99">Extra: +$2.99</option>
+              <option value="3.99">Double: +$3.99</option>
             </select>
         </div>
         
         <div class="form-group">
             <label for="optSauce"><strong>Sauce Options</strong></label>
             <select class="form-control" id="optSauce">
-              <option>Regular Tomato: no charge</option>
-              <option>Hearty Tomato: +$.99</option>
-              <option>BBQ Sauce: +$1.99</option>
+              <option value="0">Regular Tomato: no charge</option>
+              <option value="0.99">Hearty Tomato: +$.99</option>
+              <option value="1.99">BBQ Sauce: +$1.99</option>
             </select>
         </div>
           
@@ -215,7 +215,7 @@
                 <legend class="col-form-label col-sm-12 pt-0"><strong>Toppings(Each is $.99 extra)</strong></legend>
             </div>
             <div class="row" >
-                <div class="col-sm-3">
+                <div id="toppings" class="col-sm-3">
                     <div class="form-check">
                       <input class="form-check-input toppings" type="checkbox" name="pepperoni" id="pepperoni" value="pepperoni">
                       <label class="form-check-label" for="pepperoni">
@@ -300,6 +300,16 @@
   <!-- Order Total -->
   <fieldset class="form-group">
         <div class="row">
+             <div class="col-sm-12 form-group">
+<!--                  <button type="button" class="btn btn-success float-right" id="showBilling"><strong>Finished Building Pizza</strong></button>-->
+                <!-- Button trigger modal -->
+                <button type="button" class="btn btn-primary float-right" data-toggle="modal" data-target="#Confirmation_buildingPizza">
+                  Finished Building Pizza
+                </button>
+              </div>    
+        </div>
+         
+        <div class="row">
             <legend class="col-form-label col-form-label-lg col-sm-6 pt-0"><h3>Your Order Total is:</h3></legend>
             <div class="col-sm-6">
                 <div class="form-group">
@@ -307,19 +317,42 @@
                       <div class="input-group-prepend">
                         <span class="input-group-text">$</span>
                       </div>
-                      <input type="text" class="form-control" aria-label="Amount (to the nearest dollar)">
+                      <input type="text" class="form-control" id="total" aria-label="Amount (to the nearest dollar)">
+<!--
                       <div class="input-group-append">
                         <span class="input-group-text">.00</span>
                       </div>
+-->
                     </div>
                 </div>     
             </div> <!--end of  <div class="col-sm-8"> -->
         </div>  <!--end of  <div class="row"> -->
       </fieldset>
-  <!-- Billing Information -->
-  <label class="control-label" for="billingInfo"><h3>Billing Information</h3></label>
-  <form id="billingInfo">  
+  <!-- Modal -->
+  <div class="modal fade" id="Confirmation_buildingPizza" tabindex="-1" role="dialog" aria-labelledby="modalTitle" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="modalTitle">Finished Building Pizza Confirmation</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        Did you finish build your pizza and ready to checkout?
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+        <button type="button" class="btn btn-primary" id="proceedToCheckout"  data-backdrop="false">OK</button>
+      </div>
+    </div>
+  </div>
+</div>
+  <form id="billingInfo">
   <div class="row">
+   
+    <!-- Billing Information -->
+    <label class="control-label" for="billingInfo"><h3>Billing Information</h3></label>
     <div class="col-sm-12">
             <div class="form-group form-check">
               <label class="form-check-label">
@@ -492,7 +525,8 @@
               <div class="form-group">
                   <button type="button" class="btn btn-success float-right"><strong>Pay Now</strong></button> 
               </div>           
-      </div>     
+      </div>
+      
   </div>
   </form>
 </div>
