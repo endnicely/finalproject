@@ -94,6 +94,8 @@
                     <span class="input-group-text" id="name-addon">Name</span>
                 </div>
                 <input type="text" class="form-control" id="name" aria-describedby="name-addon" placeholder="Full Name">
+                <div class="">
+                </div>
             </div>
             <div class="input-group mb-3">
               <div class="input-group-prepend">
@@ -111,61 +113,62 @@
               </select>
               <input type="text" class="form-control" id="otherAddressType" placeholder="Address Type ..." >
             </div>
-<!--
-          <div class="form-group">
-            <label for="addressType">Address Type</label>
-            <select class="form-control" id="addressType">
-              <option>house</option>
-              <option>apartment</option>
-              <option>business</option>
-              <option>campus</option>
-              <option>hotel</option>
-              <option>dorm</option>
-              <option>other</option>
-            </select>
-          </div>
--->
+
             <div class="input-group mb-3">
                 <div class="input-group-prepend">
-                    <span class="input-group-text" id="streetAddress-addon">Street Address</span>
+                    <span class="input-group-text" id="stAddress-addon">Street Address</span>
                 </div>
-                <input type="text" class="form-control" id="streetAddress" aria-describedby="streetAddress-addon" placeholder="street address">
+                <input type="text" class="form-control" id="stAddress" aria-describedby="stAddress-addon" placeholder="street address">
+                <div class="">
+                </div>
             </div>
             <div class="input-group mb-3">
                 <div class="input-group-prepend">
                     <span class="input-group-text" id="suiteno-addon">Suite Number</span>
                 </div>
                 <input type="number" class="form-control" id="suiteno" aria-describedby="suiteno-addon" placeholder="optional apartment number, suite, or room number">
+                <div class="">
+                </div>
             </div>
             <div class="input-group mb-3">
                 <div class="input-group-prepend">
                     <span class="input-group-text" id="city-addon">City</span>
                 </div>
                 <input type="text" class="form-control" id="city" aria-describedby="city-addon" placeholder="City">
+                <div class="">
+                </div>
             </div>
             <div class="input-group mb-3">
                 <div class="input-group-prepend">
                     <span class="input-group-text" id="state-addon">State</span>
                 </div>
                 <input type="text" class="form-control" id="state" aria-describedby="state-addon" placeholder="State">
+                <div class="">
+                </div>
             </div>
             <div class="input-group mb-3">
                 <div class="input-group-prepend">
                     <span class="input-group-text" id="zipcode-addon">Zip Code</span>
                 </div>
                 <input type="text" class="form-control" id="zipcode" aria-describedby="zipcode-addon" placeholder="Zip Code">
+                <div class="">
+                </div>
             </div>
             <div class="input-group mb-3">
                 <div class="input-group-prepend">
                     <span class="input-group-text" id="phoneno-addon">Phone Number</span>
                 </div>
                 <input type="tel" class="form-control" id="phoneno" aria-describedby="phoneno-addon" placeholder="Phone Number">
+                <div class="">
+                </div>
             </div>
             <div class="input-group mb-3">
                 <div class="input-group-prepend">
                     <span class="input-group-text" id="phoneno-addon">Email</span>
-                </div>
+                </div>               
                 <input type="email" class="form-control" id="email" aria-describedby="email-addon" placeholder="Email">
+                <div class="">
+                </div>
             </div>
         </form> 
     </div>
@@ -324,7 +327,7 @@
              <div class="col-sm-12 form-group">
 <!--                  <button type="button" class="btn btn-success float-right" id="showBilling"><strong>Finished Building Pizza</strong></button>-->
                 <!-- Button trigger modal -->
-                <button type="button" class="btn btn-primary float-right" data-toggle="modal" data-target="#Confirmation_buildingPizza">
+                <button type="button" id="btnFinishBuildPizza" class="btn btn-primary float-right" data-toggle="modal" data-target="#Confirmation_buildingPizza">
                   Finished Building Pizza
                 </button>
               </div>    

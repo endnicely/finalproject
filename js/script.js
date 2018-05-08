@@ -13,7 +13,23 @@ function toggleOptions(toggle) {
     }
     
 }
+function validateDeliveryForm() {
+    "use strict";
+    var invalid = false;
+    var arrRequired = ["name", "stAddress", "city", "state", "zipcode", "phoneno", "email"];
+    for (var i = 0; i< arrRequired.length; i++) {
+        if($(arrRequired[i]).value === "") {
+            
+            $(arrRequired[i]).classList.add('is-invalid');
+            $(arrRequired[i]).nextElementSibling.classList.add('invalid-feedback');
+            $(arrRequired[i]).nextElementSibling.innerHTML = "required field";
+            invalid = true;
 
+        }
+    }
+    return invalid;
+    
+}
 function calculateTotal(){
     "use strict";
     
@@ -28,13 +44,9 @@ function calculateTotal(){
     var sizeCost = parseFloat($("sizeCost").value);
     var optCheese = parseFloat($("optCheese").value);
     var optSauce = parseFloat($("optSauce").value);
-    window.alert(sizeCost);
-    var sub_toppings = count * 0.99;
-    //var total = parseFloat($("sizeCost").value) + parseFloat($("optCheese").value) + parseFloat($("optSauce").value) + count * 0.99 ;
-    var total = (sizeCost + optCheese + optSauce + sub_toppings).toPrecision(4) ;
+    var subtotalToppings = count * 0.99;
+    var total = (sizeCost + optCheese + optSauce + subtotalToppings).toPrecision(4) ;
 
-    window.alert(sizeCost);
-    window.alert(total);
     $("total").value = total;
 }
 
@@ -100,22 +112,25 @@ window.addEventListener("load", function () {
    $("optSauce").addEventListener("change", calculateTotal);
    var optToppingsList =  document.getElementsByClassName('toppings');
    var optToppingsItems = [].slice.call(optToppingsList);
-    optToppingsItems.forEach(function (item) {
+    
+   optToppingsItems.forEach(function (item) {
         "use strict";
         item.addEventListener('change',function(){
             calculateTotal();
         });
+   });
+    
+    $("btnFinishBuildPizza").addEventListener("click",function(e){
+        if(validateDeliveryForm()) {
+            e.stopImmediatePropagation();      
+        }
     });
-     $("proceedToCheckout").addEventListener("click", function(){
+    
+    $("proceedToCheckout").addEventListener("click", function(){  
         $("Confirmation_buildingPizza").style.display = "none";
         $("billingInfo").style.display = "block";
         window.location.hash = "billingInfo";
-     });
-   //$("toppings").addEventListener("click", calculateTotal);
-//    buttons.addEventListener("click", function (e) {
-//	window.console.log(e.target.innerText);
-//});
-
+    });
     
 });
 
