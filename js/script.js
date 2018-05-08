@@ -16,23 +16,24 @@ function toggleOptions(toggle) {
 
 function calculateTotal(){
     "use strict";
-    //window.alert(document.getElementsByClassName('input[class="toppings"]').length);
     
     var count = 0;
     var toppings = document.getElementsByClassName("toppings");
-    //window.alert(toppings.length);
     for (var i=0; i< toppings.length; i++) {       
        if (toppings[i].checked == true){
           count++;
        }
     }
-    //window.alert(document.getElementsByClassName('input[class="toppings"]:checked').length);
-    window.alert($("sizeCost").value);
-    window.alert($("optCheese").value);
+    
+    var sizeCost = parseFloat($("sizeCost").value);
+    var optCheese = parseFloat($("optCheese").value);
+    var optSauce = parseFloat($("optSauce").value);
+    window.alert(sizeCost);
+    var sub_toppings = count * 0.99;
     //var total = parseFloat($("sizeCost").value) + parseFloat($("optCheese").value) + parseFloat($("optSauce").value) + count * 0.99 ;
-    var total = Number($("sizeCost").value) + Number($("optCheese").value) + Number($("optSauce").value) + count * 0.99 ;
-//    var total = parseFloat(($("sizeCost").value).toFixed(2)) + parseFloat(($("optCheese").value).toFixed(2)) +   parseFloat(($("optSauce").value).toFixed(2)) + count * 0.99 ;
-  
+    var total = (sizeCost + optCheese + optSauce + sub_toppings).toPrecision(4) ;
+
+    window.alert(sizeCost);
     window.alert(total);
     $("total").value = total;
 }
@@ -55,11 +56,14 @@ window.addEventListener("load", function () {
      
     var optdoughlist =  document.getElementsByName('optdough');
     var optdoughItems = [].slice.call(optdoughlist);
-    $("billingInfo").style.display ="none";
-   
-//  hide the input for other address type initially
-    $("otherAddressType").style.display = "none";
     
+   
+    
+    //  hide the input for billing information initially
+    $("billingInfo").style.display ="none";
+    
+    //  hide the input for other address type initially
+    $("otherAddressType").style.display = "none";
     $("addressType").addEventListener("change", function(){
         "use strict";
         if(this.value === "other") {
@@ -104,8 +108,8 @@ window.addEventListener("load", function () {
     });
      $("proceedToCheckout").addEventListener("click", function(){
         $("Confirmation_buildingPizza").style.display = "none";
-        //$("Confirmation_buildingPizza").setAttribute("data-dismiss", "modal");
-        $("billingInfo").style.display = "block"; 
+        $("billingInfo").style.display = "block";
+        window.location.hash = "billingInfo";
      });
    //$("toppings").addEventListener("click", calculateTotal);
 //    buttons.addEventListener("click", function (e) {
