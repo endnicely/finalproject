@@ -10,26 +10,49 @@ function toggleOptions(toggle) {
     var toppings =  document.getElementsByClassName("toppings");
     for (var j=0; j <  toppings.length; j++) {
         toppings[j].disabled = toggle;
-    }
-    
+    }  
 }
+
 function validateDeliveryForm() {
     "use strict";
     var invalid = false;
-    var arrRequired = ["name", "stAddress", "city", "state", "zipcode", "phoneno", "email"];
+    var arrRequired = ["name", "addressType", "stAddress", "city", "state", "zipcode", "phoneno", "email"];
+//    var specialAddressType = ["apartment", "other"];
     for (var i = 0; i< arrRequired.length; i++) {
         if($(arrRequired[i]).value === "") {
             
             $(arrRequired[i]).classList.add('is-invalid');
             $(arrRequired[i]).nextElementSibling.classList.add('invalid-feedback');
-            $(arrRequired[i]).nextElementSibling.innerHTML = "required field";
+            $(arrRequired[i]).nextElementSibling.innerHTML = "required information";
             invalid = true;
 
+        } else if (arrRequired[i] === "addressType" && $(arrRequired[i]).value !== "") {
+            $(arrRequired[i]).classList.add('is-valid');
+            if($(arrRequired[i]).value !== "other") {
+                $(arrRequired[i]).nextElementSibling.classList.add('valid-feedback');
+                $(arrRequired[i]).nextElementSibling.innerHTML = "looks good";
+            } else if ($("otherAddressType").value === "") {
+                $("otherAddressType").classList.add('is-invalid');
+                $("otherAddressType").nextElementSibling.classList.add('invalid-feedback');
+                $("otherAddressType").nextElementSibling.innerHTML = "required information";  
+            }
         }
     }
+    if($("addressType").value === "apartment" && $("suiteno").value === "" ) {
+        $("suiteno").classList.add('is-invalid');
+        $("suiteno").nextElementSibling.classList.add('invalid-feedback');
+        $("suiteno").nextElementSibling.innerHTML = "required information";
+    }
+    
+//    if($("addressType").value === "other" && $("otherAddressType").value === "" ) {
+//        $("otherAddressType").classList.add('is-invalid');
+//        $("otherAddressType").nextElementSibling.classList.add('invalid-feedback');
+//        $("otherAddressType").nextElementSibling.innerHTML = "required information";
+//    }
     return invalid;
     
 }
+
 function calculateTotal(){
     "use strict";
     
@@ -79,7 +102,9 @@ window.addEventListener("load", function () {
     $("addressType").addEventListener("change", function(){
         "use strict";
         if(this.value === "other") {
+            $("otherAddressType").previousElementSibling.style.display = "none";
             $("otherAddressType").style.display = "block";
+            
         } else {
             $("otherAddressType").style.display = "none";
         }
@@ -107,13 +132,13 @@ window.addEventListener("load", function () {
        
     });
    });
-   $("sizeCost").addEventListener("change", calculateTotal);
-   $("optCheese").addEventListener("change", calculateTotal);
-   $("optSauce").addEventListener("change", calculateTotal);
-   var optToppingsList =  document.getElementsByClassName('toppings');
-   var optToppingsItems = [].slice.call(optToppingsList);
+    $("sizeCost").addEventListener("change", calculateTotal);
+    $("optCheese").addEventListener("change", calculateTotal);
+    $("optSauce").addEventListener("change", calculateTotal);
+    var optToppingsList =  document.getElementsByClassName('toppings');
+    var optToppingsItems = [].slice.call(optToppingsList);
     
-   optToppingsItems.forEach(function (item) {
+    optToppingsItems.forEach(function (item) {
         "use strict";
         item.addEventListener('change',function(){
             calculateTotal();
