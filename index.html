@@ -139,7 +139,7 @@
                 <div class="input-group-prepend">
                     <span class="input-group-text" id="suiteno-addon">Suite Number</span>
                 </div>
-                <input type="number" class="form-control" id="suiteno" name="Suite Number" aria-describedby="suiteno-addon" placeholder="optional apartment number, suite, or room number">
+                <input type="text" class="form-control" id="suiteno" name="Suite Number" aria-describedby="suiteno-addon" placeholder="optional apartment number, suite, or room number">
                 <div class="">
                 </div>
             </div>
@@ -336,18 +336,16 @@
   
   <!-- Order Total -->
   <fieldset class="form-group">
-        <div class="row">
-             <div class="col-sm-12 form-group">
+    <div class="row">
+         <div class="col-sm-12 form-group">
 <!--                  <button type="button" class="btn btn-success float-right" id="showBilling"><strong>Finished Building Pizza</strong></button>-->
-                <!-- Button trigger modal -->
-                <button type="button" id="btnFinishBuildPizza" class="btn btn-primary float-right" data-toggle="modal" data-target="#Confirmation_buildingPizza">
-                    Finished Building Pizza
-                </button>
-              </div>    
-        </div>
-         
-       
-      </fieldset>
+            <!-- Button trigger modal -->
+            <button type="button" id="btnFinishBuildPizza" class="btn btn-primary float-right" data-toggle="modal" data-target="#Confirmation_buildingPizza">
+                Finished Building Pizza
+            </button>
+          </div>    
+    </div>
+  </fieldset>
   <!-- Modal -->
   <div class="modal fade" id="Confirmation_buildingPizza" tabindex="-1" role="dialog" aria-labelledby="modalTitle" aria-hidden="true">
   <div class="modal-dialog modal-dialog-centered" role="document">
@@ -374,93 +372,76 @@
     <!-- Billing Information -->
     <label class="control-label" for="billingInfo"><h3>Billing Information</h3></label>
     <div class="col-sm-12">
-            <div class="form-group form-check">
+        <div class="form-group form-check">
               <label class="form-check-label">
                 <input type="checkbox" id="sameAsDeli" value="sameAsDeli">&nbsp;Same as delivery information
               </label>
             </div>
-        </div>      
+    </div>      
     <div class="col-sm-6">           
-<!--
-            <div class="form-group checkbox">
-                <label><input type="checkbox" value="sameAsDeli">Same as delivery information</label>
-            </div>
--->           
-            
-            <div class="input-group mb-3">
-                <input type="text"  id="bStAddress" class="form-control" placeholder="Street Address" aria-label="Street Address" aria-describedby="bStAddress-addon2">
-                <div class="input-group-append">
+        <div class="input-group mb-3">
+            <div class="input-group-prepend">
                 <span class="input-group-text" id="bStAddress-addon2">Street Address</span>
-                </div>
             </div>
-            <div class="input-group mb-3">
-                <input type="text"  id="bSuiteNo" class="form-control" placeholder="optional apartment number, suite, or room number" aria-label="Suite Number" aria-describedby="bSuiteNo-addon2">
-                <div class="input-group-append">
+            <input type="text"  id="bStAddress" name="Street Address" class="form-control" placeholder="Street Address" aria-label="Street Address" aria-describedby="bStAddress-addon2">
+            <div class="">
+            </div> 
+        </div>
+        <div class="input-group mb-3">
+            <div class="input-group-prepend">
                 <span class="input-group-text" id="bSuiteNo-addon2">Suite Number</span>
-                </div>
             </div>
-            <div class="input-group mb-3">
-              <input type="text"  id="bCity" class="form-control" placeholder="City" aria-label="City" aria-describedby="bCity-addon2">
-              <div class="input-group-append">
+            <input type="text"  id="bSuiteNo" name="Suite Number" class="form-control" placeholder="optional apartment number, suite, or room number" aria-label="Suite Number" aria-describedby="bSuiteNo-addon2">
+            <div class="">
+            </div>              
+        </div>
+        <div class="input-group mb-3">
+            <div class="input-group-prepend">
                 <span class="input-group-text" id="bCity-addon2">City</span>
-              </div>
             </div>
-            <div class="input-group mb-3">
-              <input type="text"  id="bState" class="form-control" placeholder="State" aria-label="State" aria-describedby="bState-addon2">
-              <div class="input-group-append">
-                <span class="input-group-text" id="bState-addon2">State</span>
-              </div>
-            </div>
-            <div class="input-group mb-3">
-              <input type="text"  id="bZipCode" class="form-control" placeholder="Zip Code" aria-label="Zip Code" aria-describedby="bZipCode-addon2">
-              <div class="input-group-append">
-                <span class="input-group-text" id="bZipCode-addon2">Zip Code</span>
-              </div>
-            </div>
-<!--        <div class="form-group">
-                <label for="card-holder-name">Name on Card</label>
-                <input type="text" class="form-control" name="card-holder-name" id="card-holder-name" placeholder="Card Holder's Name">   
-            </div>
-           <div class="form-group">
-                <label for="streetAddress">Street Address</label>
-                <input type="text" class="form-control" name="streetAddress" id="streetAddress" placeholder="street address">
-            </div>
-            <div class="form-group">
-                <label for="suiteno">optional apartment number, suite, or room number</label>
-                <input type="text" class="form-control" name="suiteno" id="suiteno" placeholder="optional apartment number, suite, or room number">
-            </div>
-            
-
-            <div class="form-group">
-                <label for="city">city</label>
-                <input type="text" class="form-control" name="city" id="city" placeholder="city">
-            </div>
-            <div class="form-group">
-                <label for="state">state</label>
-                <input type="text" class="form-control" name="state" id="state" placeholder="state">
-            </div>
-            <div class="form-group">
-                <label for="zipcode">zip code</label>
-                <input type="text" class="form-control" name="zipcode" id="zipcode" placeholder="zip code">
-            </div>
--->
-      </div>
+            <input type="text"  id="bCity" name="City" class="form-control" placeholder="City" aria-label="City" aria-describedby="bCity-addon2">
+            <div class="">
+            </div>      
+        </div>
+        <div class="input-group mb-3">
+          <div class="input-group-prepend">
+            <span class="input-group-text" id="bState-addon2">State</span>
+          </div>
+          <input type="text" id="bState" name="State" class="form-control" placeholder="State" aria-label="State" aria-describedby="bState-addon2">
+          <div class="">
+          </div>     
+        </div>
+        <div class="input-group mb-3">
+          <div class="input-group-prepend">
+            <span class="input-group-text" id="bZipCode-addon2">Zip Code</span>
+          </div>
+          <input type="text"  id="bZipCode" name="Zip Code" class="form-control" placeholder="Zip Code" aria-label="Zip Code" aria-describedby="bZipCode-addon2">
+          <div class="">
+          </div>
+        </div>
+    </div>
     <div class="col-sm-6">
-
-              <div class="input-group mb-3">
-                <input type="text"  id="cardHolderName" class="form-control" placeholder="Card Holder's Name" aria-label="Card Holder's Name" aria-describedby="cardHolderName-addon2">
-                <div class="input-group-append">
-                <span class="input-group-text" id="cardHolderName-addon2">Name on Card</span>
+        <div class="input-group mb-3">
+                <div class="input-group-prepend">
+                    <span class="input-group-text" id="cardHolderName-addon2">Name on Card</span>
+                </div>
+                <input type="text"  id="cardHolderName" name="Card Holder's Full Name" class="form-control" placeholder="Card Holder's Name" aria-label="Card Holder's Name" aria-describedby="cardHolderName-addon2">
+                <div class="">
                 </div>
               </div>
-              <div class="input-group mb-3">
-                <input type="text"  id="cardNumber" class="form-control" placeholder="Debit/Credit Card Number" aria-label="Debit/Credit Card Number" aria-describedby="cardNumber-addon2">
-                <div class="input-group-append">
+        <div class="input-group mb-3">
+            <div class="input-group-prepend">
                 <span class="input-group-text" id="cardNumber-addon2">Card Number</span>
-                </div>
-              </div>
-              <div class="input-group mb-3">          
-                <select class="form-control" name="expiry-month" id="expiry-month">
+            </div>
+            <input type="text" id="cardNumber" name="Credit Card Number" class="form-control" placeholder="Debit/Credit Card Number" aria-label="Debit/Credit Card Number" aria-describedby="cardNumber-addon2">
+            <div class="">
+            </div>           
+        </div>
+        <div class="input-group mb-3">
+            <div class="input-group-prepend">
+                <span class="input-group-text" id="expirationDate-addon2">Expiration Date</span>
+            </div>
+            <select class="form-control" name="Expiry Month" id="expiry-month">
                     <option>Month</option>
                     <option value="01">Jan (01)</option>
                     <option value="02">Feb (02)</option>
@@ -475,7 +456,7 @@
                     <option value="11">Nov (11)</option>
                     <option value="12">Dec (12)</option>
                 </select>
-                <select class="form-control" name="expiry-year" id="expiry-year">
+            <select class="form-control" name="Expiry Year" id="expiry-year">
                     <option>Year</option>
                     <option value="18">2018</option>
                     <option value="19">2019</option>
@@ -488,17 +469,16 @@
                     <option value="26">2026</option>
                     <option value="27">2027</option>
                     <option value="28">2028</option>
-                </select>     
-                <div class="input-group-append">
-                    <span class="input-group-text" id="expirationDate-addon2">Expiration Date</span>
-                </div>
-              </div>
-              <div class="input-group mb-3">
-                <input type="text"  id="cvv" class="form-control" placeholder="Security Code" aria-label="Card CVV" aria-describedby="cvv-addon2">
-                <div class="input-group-append">
+                </select>
+        </div>
+        <div class="input-group mb-3">
+            <div class="input-group-prepend">
                 <span class="input-group-text" id="cvv-addon2">Card CVV</span>
-                </div>
-              </div>
+            </div>
+            <input type="text"  id="cvv" name="Card CVV Security Code" class="form-control" placeholder="Security Code" aria-label="Card CVV" aria-describedby="cvv-addon2">
+            <div class="">
+            </div>      
+        </div>
               
 <!--
               <div class="form-group">

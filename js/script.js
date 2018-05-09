@@ -63,13 +63,13 @@ function isValidDeliveryForm() {
 //                            validateInput(arrRequired[i], true, "looks good");
 //                        }
                         break;
-//                    case "stAddress":
-//                        isValid = isValidFullName($(arrRequired[i]).value);
+                    case "stAddress":
+                        isValid = isValidAddress($(arrRequired[i]).value);
 //                        isValid ? validateInput(arrRequired[i], true, "looks good") : validateInput(arrRequired[i], false, $(arrRequired[i]).name + "is invalid");
-//                        break;
-//                    case "city":
-//                        code block
-//                        break;
+                        break;
+                    case "city":
+                        isValid = isValidCity($(arrRequired[i]).value);
+                        break;
                     case "state":
                         isValid = isValidState($(arrRequired[i]).value);
 //                        isValid ? validateInput(arrRequired[i], true, "looks good") : validateInput(arrRequired[i], false, $(arrRequired[i]).name + "is invalid");
@@ -131,8 +131,24 @@ function isValidFullName(fullName) {
     //return /^[a-zA-Z]+(([',. -][a-zA-Z ])?[a-zA-Z]*)*$/g.test(fullName);
 }
 
+function isValidAddress(address) {
+    //return /^[-.?!,;:() A-Za-z0-9]*$/.test(address);
+    return /\d+[ ](?:[A-Za-z0-9.-]+[ ]?)+(?:Avenue|Lane|Road|Boulevard|Drive|Street|Ave|Dr|Rd|Blvd|Ln|St)\.?/.test(address);
+}
+
+function isValidCity(city) {
+    return /(?:[A-Z][a-z.-]+[ ]?)+/.test(city);
+}
+
+function isValidState(state) {
+    var objRegExp = /^(AK|AL|AR|AZ|CA|CO|CT|DC|DE|FL|GA|HI|IA|ID|IL|IN|KS|KY|LA|MA|MD|ME|MI|MN|MO|MS|MT|NB|NC|ND|NH|NJ|NM|NV|NY|OH|OK|OR|PA|RI|SC|SD|TN|TX|UT|VA|VT|WA|WI|WV|WY)$/i; 
+    return objRegExp.test(state);
+}
+
+
 function isValidUSZip(sZip) {
     return /^\d{5}(-\d{4})?$/.test(sZip);
+    //\b\d{5}(?:-\d{4})?\b
 }
 
 function isValidPhoneNumber(phoneNo) {
@@ -146,11 +162,6 @@ function isValidPhoneNumber(phoneNo) {
 
 function isValidEmail(email) {
     return /\S+@\S+\.\S+/.test(email);
-}
-
-function isValidState(state) {
-    var objRegExp = /^(AK|AL|AR|AZ|CA|CO|CT|DC|DE|FL|GA|HI|IA|ID|IL|IN|KS|KY|LA|MA|MD|ME|MI|MN|MO|MS|MT|NB|NC|ND|NH|NJ|NM|NV|NY|OH|OK|OR|PA|RI|SC|SD|TN|TX|UT|VA|VT|WA|WI|WV|WY)$/i; 
-    return objRegExp.test(state);
 }
 
 function calculateTotal(){
@@ -246,7 +257,6 @@ window.addEventListener("load", function () {
     
     $("btnFinishBuildPizza").addEventListener("click",function(e){
         if (this.innerHTML.trim() === "Finished Building Pizza"){
-            window.alert("here");
             if((!isValidDeliveryForm()) || (!isValidOrderForm())) {
                 e.stopImmediatePropagation();      
             }
@@ -277,6 +287,30 @@ window.addEventListener("load", function () {
         }
     });
     
+    $("stAddress").addEventListener("blur", function(e){
+        if(isValidAddress(e.currentTarget.value)) {
+            validateInput(e.currentTarget.id, true, "looks good");   
+        } else {
+            validateInput(e.currentTarget.id, false, "invalid input"); 
+        }
+    });
+    
+    $("city").addEventListener("blur", function(e){
+        if(isValidCity(e.currentTarget.value)) {
+            validateInput(e.currentTarget.id, true, "looks good");   
+        } else {
+            validateInput(e.currentTarget.id, false, "invalid input"); 
+        }
+    });
+    
+    $("state").addEventListener("blur", function(e){
+        if(isValidState(e.currentTarget.value)) {
+            validateInput(e.currentTarget.id, true, "looks good");   
+        } else {
+            validateInput(e.currentTarget.id, false, "invalid input"); 
+        }
+    });
+    
     $("zipcode").addEventListener("blur", function(e){
         if(isValidUSZip(e.currentTarget.value)) {
             validateInput(e.currentTarget.id, true, "looks good");   
@@ -301,14 +335,6 @@ window.addEventListener("load", function () {
         }
     });
     
-    $("state").addEventListener("blur", function(e){
-        if(isValidState(e.currentTarget.value)) {
-            validateInput(e.currentTarget.id, true, "looks good");   
-        } else {
-            validateInput(e.currentTarget.id, false, "invalid input"); 
-        }
-    });
-    
     $("sameAsDeli").addEventListener("click", function(){
         if(this.checked) {
            $("cardHolderName").value = $("name").value;
@@ -317,6 +343,44 @@ window.addEventListener("load", function () {
            $("bCity").value = $("city").value;
            $("bState").value = $("state").value;
            $("bZipCode").value = $("zipcode").value; 
+        }
+    });
+    
+    $("cardHolderName").addEventListener("blur", function(e){
+        if(isValidFullName(e.currentTarget.value)) {
+            validateInput(e.currentTarget.id, true, "looks good");   
+        } else {
+            validateInput(e.currentTarget.id, false, "invalid input"); 
+        }
+    });
+    $("bStAddress").addEventListener("blur", function(e){
+        if(isValidAddress(e.currentTarget.value)) {
+            validateInput(e.currentTarget.id, true, "looks good");   
+        } else {
+            validateInput(e.currentTarget.id, false, "invalid input"); 
+        }
+    });
+    
+    $("bCity").addEventListener("blur", function(e){
+        if(isValidCity(e.currentTarget.value)) {
+            validateInput(e.currentTarget.id, true, "looks good");   
+        } else {
+            validateInput(e.currentTarget.id, false, "invalid input"); 
+        }
+    });
+    $("bState").addEventListener("blur", function(e){
+        if(isValidState(e.currentTarget.value)) {
+            validateInput(e.currentTarget.id, true, "looks good");   
+        } else {
+            validateInput(e.currentTarget.id, false, "invalid input"); 
+        }
+    });
+    
+    $("bZipCode").addEventListener("blur", function(e){
+        if(isValidUSZip(e.currentTarget.value)) {
+            validateInput(e.currentTarget.id, true, "looks good");   
+        } else {
+            validateInput(e.currentTarget.id, false, "invalid input"); 
         }
     });
    
