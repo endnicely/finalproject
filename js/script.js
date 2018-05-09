@@ -67,9 +67,35 @@ function validateDeliveryForm() {
     
 }
 
-function validateFullName(fullName) {
-    var regexp = new RegExp("^[a-z]([-']?[a-z]+)*( [a-z]([-']?[a-z]+)*)+$");
-    return regexp.test(fullName);
+function validateOrderForm() {
+    if ($("total").value = ""){
+        return false;
+    }       
+}
+
+
+function isValidFullName(fullName) {
+//    var regexp = new RegExp("/^[a-z]([-']?[a-z]+)*( [a-z]([-']?[a-z]+)*)+$/");
+//    return /^[a-zA-Z ]{2,30}$/.test(fullName);
+    return (/^[a-zA-Z]+(([',. -][a-zA-Z ])?[a-zA-Z]*)*$/g).test(fullName);
+}
+function isValidUSZip(sZip) {
+    return /^\d{5}(-\d{4})?$/.test(sZip);
+}
+function isValidPhoneNumber(phoneNo) {
+    //valid phone number
+    //'123-345-3456';
+    //'(078)789-8908';
+    //'(078) 789-8908'; // Note the space
+    return /^\(?([0-9]{3})\)?[-. ]?([0-9]{3})[-. ]?([0-9]{4})$/.test(phoneNo);
+}
+
+function isValidEmail(email) {
+    return /\S+@\S+\.\S+/.test(email);
+}
+
+function isValidState(state) {
+    return /^(AL|AK|AZ|AR|CA|CO|CT|DE|FL|GA|HI|ID|IL|IN|IA|KS|KY|LA|ME|MD|MA|MI|MN|MS|MO|MT|NE|NV|NH|NJ|NM|NY|NC|ND|OH|OK|OR|PA|RI|SC|SD||TN|TX|UT|VT|VA|WA|WV|WI|WY)$/.test(state);
 }
 
 function calculateTotal(){
@@ -90,6 +116,7 @@ function calculateTotal(){
     var total = (sizeCost + optCheese + optSauce + subtotalToppings).toPrecision(4) ;
 
     $("total").value = total;
+    $("orderMessage").innerHTML = 'Your Order Total is: <img src="images/pizzaman.png" alt="pizzaman" width="50px"/>';
 }
 
 window.addEventListener("load", function () {
@@ -168,6 +195,11 @@ window.addEventListener("load", function () {
         if(validateDeliveryForm()) {
             e.stopImmediatePropagation();      
         }
+        
+        if (!validateOrderForm()) {
+            e.stopImmediatePropagation();
+            $("orderMessage").innerHTML = "Order Your Pizza Please";
+        }
     });
     
     $("proceedToCheckout").addEventListener("click", function(){  
@@ -176,6 +208,45 @@ window.addEventListener("load", function () {
         window.location.hash = "billingInfo";
     });
     
+    $("name").addEventListener("mouseout", function(e){
+        if(isValidFullName(e.currentTarget.value)) {
+            validateInput(e.currentTarget.id, true);   
+        } else {
+            validateInput(e.currentTarget.id, false); 
+        }
+    });
+    
+    $("zipcode").addEventListener("mouseout", function(e){
+        if(isValidUSZip(e.currentTarget.value)) {
+            validateInput(e.currentTarget.id, true);   
+        } else {
+            validateInput(e.currentTarget.id, false); 
+        }
+    });
+    
+    $("phoneno").addEventListener("mouseout", function(e){
+        if(isValidPhoneNumber(e.currentTarget.value)) {
+            validateInput(e.currentTarget.id, true);   
+        } else {
+            validateInput(e.currentTarget.id, false); 
+        }
+    });
+    
+    $("email").addEventListener("mouseout", function(e){
+        if(isValidEmail(e.currentTarget.value)) {
+            validateInput(e.currentTarget.id, true);   
+        } else {
+            validateInput(e.currentTarget.id, false); 
+        }
+    });
+    
+    $("state").addEventListener("mouseout", function(e){
+        if(isValidState(e.currentTarget.value)) {
+            validateInput(e.currentTarget.id, true);   
+        } else {
+            validateInput(e.currentTarget.id, false); 
+        }
+    });
 });
 
 
