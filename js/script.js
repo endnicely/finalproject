@@ -5,12 +5,29 @@ var $ = function (id) {
 };
 
 function toggleOptions(toggle) {
+    "use strict";
     $("optCheese").disabled = toggle;
     $("optSauce").disabled = toggle;
     var toppings =  document.getElementsByClassName("toppings");
     for (var j=0; j <  toppings.length; j++) {
         toppings[j].disabled = toggle;
     }  
+}
+//utility function
+function validateInput(inputName, isValid) {
+    if (isValid) {
+        $(inputName).classList.remove('is-invalid');
+        $(inputName).classList.add('is-valid');
+        $(inputName).nextElementSibling.classList.remove('invalid-feedback');
+        $(inputName).nextElementSibling.classList.add('valid-feedback');
+        $(inputName).nextElementSibling.innerHTML = "looks good";
+    } else {
+            $(inputName).classList.remove('is-valid');
+            $(inputName).classList.add('is-invalid');
+            $(inputName).nextElementSibling.classList.remove('valid-feedback');
+            $(inputName).nextElementSibling.classList.add('invalid-feedback');
+            $(inputName).nextElementSibling.innerHTML = "required information";
+    }
 }
 
 function validateDeliveryForm() {
@@ -20,37 +37,39 @@ function validateDeliveryForm() {
 //    var specialAddressType = ["apartment", "other"];
     for (var i = 0; i< arrRequired.length; i++) {
         if($(arrRequired[i]).value === "") {
-            
-            $(arrRequired[i]).classList.add('is-invalid');
-            $(arrRequired[i]).nextElementSibling.classList.add('invalid-feedback');
-            $(arrRequired[i]).nextElementSibling.innerHTML = "required information";
+            validateInput(arrRequired[i], false);
             invalid = true;
 
         } else if (arrRequired[i] === "addressType" && $(arrRequired[i]).value !== "") {
+            $(arrRequired[i]).classList.remove('is-invalid');
             $(arrRequired[i]).classList.add('is-valid');
+           
             if($(arrRequired[i]).value !== "other") {
-                $(arrRequired[i]).nextElementSibling.classList.add('valid-feedback');
-                $(arrRequired[i]).nextElementSibling.innerHTML = "looks good";
+                validateInput(arrRequired[i], true);
             } else if ($("otherAddressType").value === "") {
-                $("otherAddressType").classList.add('is-invalid');
-                $("otherAddressType").nextElementSibling.classList.add('invalid-feedback');
-                $("otherAddressType").nextElementSibling.innerHTML = "required information";  
+                validateInput("otherAddressType", false);
+                invalid = true;
+            } else {
+                validateInput("otherAddressType", true);
+                invalid = false;
             }
+        } else {
+            validateInput(arrRequired[i], true);
+            invalid = false;
         }
     }
     if($("addressType").value === "apartment" && $("suiteno").value === "" ) {
-        $("suiteno").classList.add('is-invalid');
-        $("suiteno").nextElementSibling.classList.add('invalid-feedback');
-        $("suiteno").nextElementSibling.innerHTML = "required information";
+        validateInput("suiteno", false);
+        invalid = true;
     }
     
-//    if($("addressType").value === "other" && $("otherAddressType").value === "" ) {
-//        $("otherAddressType").classList.add('is-invalid');
-//        $("otherAddressType").nextElementSibling.classList.add('invalid-feedback');
-//        $("otherAddressType").nextElementSibling.innerHTML = "required information";
-//    }
     return invalid;
     
+}
+
+function validateFullName(fullName) {
+    var regexp = new RegExp("^[a-z]([-']?[a-z]+)*( [a-z]([-']?[a-z]+)*)+$");
+    return regexp.test(fullName);
 }
 
 function calculateTotal(){
