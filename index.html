@@ -39,7 +39,7 @@
       }
       
       #orderMessage {
-              color: red;
+              color: #dc3545;
               font-weight: 400;
               font-size: 30px;
               display: inline-block;
@@ -102,7 +102,7 @@
                 <div class="input-group-prepend">
                     <span class="input-group-text" id="name-addon">Name</span>
                 </div>
-                <input type="text" class="form-control" id="name" aria-describedby="name-addon" placeholder="Full Name">
+                <input type="text" class="form-control" id="name" name="Full Name" aria-describedby="name-addon" placeholder="Full Name">
                 <div class="">
                 </div>
             </div>
@@ -110,7 +110,7 @@
               <div class="input-group-prepend">
                 <label class="input-group-text" for="addressType">Address Type</label>
               </div>
-              <select class="custom-select" id="addressType">
+              <select class="custom-select" id="addressType" name="Address Type">
                 <option value="" selected>Choose...</option>
                 <option value="house">house</option>
                 <option value="apartment">apartment</option>
@@ -122,7 +122,7 @@
               </select>
               <div class="">
               </div>
-              <input type="text" class="form-control" id="otherAddressType" placeholder="Address Type ..." >
+              <input type="text" class="form-control" id="otherAddressType" name="Other Address Type" placeholder="Address Type ..." >
               <div class="">
               </div>
             </div>
@@ -131,7 +131,7 @@
                 <div class="input-group-prepend">
                     <span class="input-group-text" id="stAddress-addon">Street Address</span>
                 </div>
-                <input type="text" class="form-control" id="stAddress" aria-describedby="stAddress-addon" placeholder="street address">
+                <input type="text" class="form-control" id="stAddress" name="Street Address" aria-describedby="stAddress-addon" placeholder="street address">
                 <div class="">
                 </div>
             </div>
@@ -139,7 +139,7 @@
                 <div class="input-group-prepend">
                     <span class="input-group-text" id="suiteno-addon">Suite Number</span>
                 </div>
-                <input type="number" class="form-control" id="suiteno" aria-describedby="suiteno-addon" placeholder="optional apartment number, suite, or room number">
+                <input type="number" class="form-control" id="suiteno" name="Suite Number" aria-describedby="suiteno-addon" placeholder="optional apartment number, suite, or room number">
                 <div class="">
                 </div>
             </div>
@@ -147,7 +147,7 @@
                 <div class="input-group-prepend">
                     <span class="input-group-text" id="city-addon">City</span>
                 </div>
-                <input type="text" class="form-control" id="city" aria-describedby="city-addon" placeholder="City">
+                <input type="text" class="form-control" id="city" name="City" aria-describedby="city-addon" placeholder="City">
                 <div class="">
                 </div>
             </div>
@@ -155,7 +155,7 @@
                 <div class="input-group-prepend">
                     <span class="input-group-text" id="state-addon">State</span>
                 </div>
-                <input type="text" class="form-control" id="state" aria-describedby="state-addon" placeholder="State">
+                <input type="text" class="form-control" id="state" name="State" aria-describedby="state-addon" placeholder="State">
                 <div class="">
                 </div>
             </div>
@@ -163,7 +163,7 @@
                 <div class="input-group-prepend">
                     <span class="input-group-text" id="zipcode-addon">Zip Code</span>
                 </div>
-                <input type="text" class="form-control" id="zipcode" aria-describedby="zipcode-addon" placeholder="Zip Code">
+                <input type="text" class="form-control" id="zipcode" name="Zip Code" aria-describedby="zipcode-addon" placeholder="Zip Code">
                 <div class="">
                 </div>
             </div>
@@ -171,7 +171,7 @@
                 <div class="input-group-prepend">
                     <span class="input-group-text" id="phoneno-addon">Phone Number</span>
                 </div>
-                <input type="tel" class="form-control" id="phoneno" aria-describedby="phoneno-addon" placeholder="Phone Number">
+                <input type="tel" class="form-control" id="phoneno" name="Phone Number" aria-describedby="phoneno-addon" placeholder="Phone Number">
                 <div class="">
                 </div>
             </div>
@@ -179,7 +179,7 @@
                 <div class="input-group-prepend">
                     <span class="input-group-text" id="phoneno-addon">Email</span>
                 </div>               
-                <input type="email" class="form-control" id="email" aria-describedby="email-addon" placeholder="Email">
+                <input type="email" class="form-control" id="email" name="Email" aria-describedby="email-addon" placeholder="Email">
                 <div class="">
                 </div>
             </div>
@@ -341,7 +341,7 @@
 <!--                  <button type="button" class="btn btn-success float-right" id="showBilling"><strong>Finished Building Pizza</strong></button>-->
                 <!-- Button trigger modal -->
                 <button type="button" id="btnFinishBuildPizza" class="btn btn-primary float-right" data-toggle="modal" data-target="#Confirmation_buildingPizza">
-                  Finished Building Pizza
+                    Finished Building Pizza
                 </button>
               </div>    
         </div>

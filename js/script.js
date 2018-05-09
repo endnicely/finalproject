@@ -13,80 +13,134 @@ function toggleOptions(toggle) {
         toppings[j].disabled = toggle;
     }  
 }
+
 //utility function
-function validateInput(inputName, isValid) {
-    if (isValid) {
-        $(inputName).classList.remove('is-invalid');
-        $(inputName).classList.add('is-valid');
-        $(inputName).nextElementSibling.classList.remove('invalid-feedback');
-        $(inputName).nextElementSibling.classList.add('valid-feedback');
-        $(inputName).nextElementSibling.innerHTML = "looks good";
-    } else {
-            $(inputName).classList.remove('is-valid');
-            $(inputName).classList.add('is-invalid');
-            $(inputName).nextElementSibling.classList.remove('valid-feedback');
-            $(inputName).nextElementSibling.classList.add('invalid-feedback');
-            $(inputName).nextElementSibling.innerHTML = "required information";
+function ReadOnlyForm(formId, isReadOnly) {
+    var f = document.forms[formId];
+    for(var i=0,fLen=f.length;i<fLen;i++) {
+      f.elements[i].readOnly = isReadOnly;  //the "O" must be upper case
+      f.elements[i].disabled = isReadOnly;
     }
 }
 
-function validateDeliveryForm() {
+function validateInput(inputName, isValid, feedback) {
+    var removeClass = isValid ? "is-invalid" : "is-valid";
+    var addClass = isValid ? "is-valid" : "is-invalid";
+    var removeClass_feedback = isValid ? "invalid-feedback" : "valid-feedback";
+    var addClass_feedback = isValid ? "valid-feedback" : "invalid-feedback";
+    
+    $(inputName).classList.remove(removeClass);
+    $(inputName).classList.add(addClass);
+    $(inputName).nextElementSibling.classList.remove(removeClass_feedback);
+    $(inputName).nextElementSibling.classList.add(addClass_feedback);
+    $(inputName).nextElementSibling.innerHTML = feedback;
+}
+
+
+
+function isValidDeliveryForm() {
     "use strict";
-    var invalid = false;
+    var isValid = false;
     var arrRequired = ["name", "addressType", "stAddress", "city", "state", "zipcode", "phoneno", "email"];
-//    var specialAddressType = ["apartment", "other"];
     for (var i = 0; i< arrRequired.length; i++) {
-        if($(arrRequired[i]).value === "") {
-            validateInput(arrRequired[i], false);
-            invalid = true;
-
-        } else if (arrRequired[i] === "addressType" && $(arrRequired[i]).value !== "") {
-            $(arrRequired[i]).classList.remove('is-invalid');
-            $(arrRequired[i]).classList.add('is-valid');
-           
-            if($(arrRequired[i]).value !== "other") {
-                validateInput(arrRequired[i], true);
-            } else if ($("otherAddressType").value === "") {
-                validateInput("otherAddressType", false);
-                invalid = true;
-            } else {
-                validateInput("otherAddressType", true);
-                invalid = false;
-            }
+        if(isInputEmpty(arrRequired[i])) {
+            validateInput(arrRequired[i], false, $(arrRequired[i]).name + " is required");
+            isValid = false;
         } else {
-            validateInput(arrRequired[i], true);
-            invalid = false;
+                switch(arrRequired[i]) {
+                    case "name":
+                        isValid = isValidFullName($(arrRequired[i]).value);
+//                        isValid ? validateInput(arrRequired[i], true, "looks good") : validateInput(arrRequired[i], false, $(arrRequired[i]).name + "is invalid");
+                        break;
+                    case "addressType":
+                        if($(arrRequired[i]).value === "other" && isInputEmpty("otherAddressType") ) {
+                             validateInput("otherAddressType", false, $("otherAddressType").value + "is required");
+                            isValid = false;
+                        } else if ($(arrRequired[i]).value === "apartment" && isInputEmpty("suiteno") ) {
+                             validateInput("suiteno", false, $("suiteno").value + "is required");
+                        }
+//                        }else if {
+//                            validateInput(arrRequired[i], true, "looks good");
+//                        }
+                        break;
+//                    case "stAddress":
+//                        isValid = isValidFullName($(arrRequired[i]).value);
+//                        isValid ? validateInput(arrRequired[i], true, "looks good") : validateInput(arrRequired[i], false, $(arrRequired[i]).name + "is invalid");
+//                        break;
+//                    case "city":
+//                        code block
+//                        break;
+                    case "state":
+                        isValid = isValidState($(arrRequired[i]).value);
+//                        isValid ? validateInput(arrRequired[i], true, "looks good") : validateInput(arrRequired[i], false, $(arrRequired[i]).name + "is invalid");
+                        break;
+                    case "zipcode":
+                        isValid = isValidUSZip($(arrRequired[i]).value);
+//                        isValid ? validateInput(arrRequired[i], true, "looks good") : validateInput(arrRequired[i], false, $(arrRequired[i]).name + "is invalid");
+                        break;
+                    case "phoneon":
+                        isValid = isValidPhoneNumber($(arrRequired[i]).value);
+//                        isValid ? validateInput(arrRequired[i], true, "looks good") : validateInput(arrRequired[i], false, $(arrRequired[i]).name + "is invalid");
+                        break;
+                    case "email":
+                        isValid = isValidEmail($(arrRequired[i]).value);
+//                        isValid ? validateInput(arrRequired[i], true, "looks good") : validateInput(arrRequired[i], false, $(arrRequired[i]).name + "is invalid");
+                        break;
+                    default:
+                }
+                isValid ? validateInput(arrRequired[i], true, "looks good") : validateInput(arrRequired[i], false, $(arrRequired[i]).name + " is invalid");
         }
-    }
-    if($("addressType").value === "apartment" && $("suiteno").value === "" ) {
-        validateInput("suiteno", false);
-        invalid = true;
+//        } else if (arrRequired[i] === "addressType" && $(arrRequired[i]).value !== "") {
+//            $(arrRequired[i]).classList.remove('is-invalid');
+//            $(arrRequired[i]).classList.add('is-valid');
+//           
+//            if($(arrRequired[i]).value !== "other") {
+//                validateInput(arrRequired[i], true);
+//            } else if ($("otherAddressType").value === "") {
+//                validateInput("otherAddressType", false, "required information");
+//                invalid = true;
+//            } else {
+//                validateInput("otherAddressType", true, "looks good");
+//                invalid = false;
+//            }
+//        } else {
+//            validateInput(arrRequired[i], true, "looks good");
+//            invalid = false;
+//        }
     }
     
-    return invalid;
     
+    return isValid;    
 }
 
-function validateOrderForm() {
-    if ($("total").value = ""){
-        return false;
-    }       
+function isInputEmpty(input) {
+    return $(input).value.trim() === "" ? true : false;
 }
 
+function isValidOrderForm() {
+    if ($("total").value !== ""){
+        return true;
+    }else {
+        $("orderMessage").innerHTML = "Order Your Pizza Please";
+         return false;
+    }      
+}
 
 function isValidFullName(fullName) {
-//    var regexp = new RegExp("/^[a-z]([-']?[a-z]+)*( [a-z]([-']?[a-z]+)*)+$/");
-//    return /^[a-zA-Z ]{2,30}$/.test(fullName);
-    return (/^[a-zA-Z]+(([',. -][a-zA-Z ])?[a-zA-Z]*)*$/g).test(fullName);
+    return /^[a-z]+ [a-z]+$/i.test(fullName);
+    //return /^[a-zA-Z]+(([',. -][a-zA-Z ])?[a-zA-Z]*)*$/g.test(fullName);
 }
+
 function isValidUSZip(sZip) {
     return /^\d{5}(-\d{4})?$/.test(sZip);
 }
+
 function isValidPhoneNumber(phoneNo) {
-    //valid phone number
+    //valid phone number pattern
     //'123-345-3456';
     //'(078)789-8908';
     //'(078) 789-8908'; // Note the space
+    //'1234567890'
     return /^\(?([0-9]{3})\)?[-. ]?([0-9]{3})[-. ]?([0-9]{4})$/.test(phoneNo);
 }
 
@@ -95,7 +149,8 @@ function isValidEmail(email) {
 }
 
 function isValidState(state) {
-    return /^(AL|AK|AZ|AR|CA|CO|CT|DE|FL|GA|HI|ID|IL|IN|IA|KS|KY|LA|ME|MD|MA|MI|MN|MS|MO|MT|NE|NV|NH|NJ|NM|NY|NC|ND|OH|OK|OR|PA|RI|SC|SD||TN|TX|UT|VT|VA|WA|WV|WI|WY)$/.test(state);
+    var objRegExp = /^(AK|AL|AR|AZ|CA|CO|CT|DC|DE|FL|GA|HI|IA|ID|IL|IN|KS|KY|LA|MA|MD|ME|MI|MN|MO|MS|MT|NB|NC|ND|NH|NJ|NM|NV|NY|OH|OK|OR|PA|RI|SC|SD|TN|TX|UT|VA|VT|WA|WI|WV|WY)$/i; 
+    return objRegExp.test(state);
 }
 
 function calculateTotal(){
@@ -138,8 +193,6 @@ window.addEventListener("load", function () {
     var optdoughlist =  document.getElementsByName('optdough');
     var optdoughItems = [].slice.call(optdoughlist);
     
-   
-    
     //  hide the input for billing information initially
     $("billingInfo").style.display ="none";
     
@@ -176,8 +229,8 @@ window.addEventListener("load", function () {
         //$("total").value = $("sizeCost").value;
         calculateTotal();
        
+     });
     });
-   });
     $("sizeCost").addEventListener("change", calculateTotal);
     $("optCheese").addEventListener("change", calculateTotal);
     $("optSauce").addEventListener("change", calculateTotal);
@@ -189,62 +242,70 @@ window.addEventListener("load", function () {
         item.addEventListener('change',function(){
             calculateTotal();
         });
-   });
-    
-    $("btnFinishBuildPizza").addEventListener("click",function(e){
-        if(validateDeliveryForm()) {
-            e.stopImmediatePropagation();      
-        }
-        
-        if (!validateOrderForm()) {
-            e.stopImmediatePropagation();
-            $("orderMessage").innerHTML = "Order Your Pizza Please";
-        }
     });
     
-    $("proceedToCheckout").addEventListener("click", function(){  
+    $("btnFinishBuildPizza").addEventListener("click",function(e){
+        if (this.innerHTML.trim() === "Finished Building Pizza"){
+            window.alert("here");
+            if((!isValidDeliveryForm()) || (!isValidOrderForm())) {
+                e.stopImmediatePropagation();      
+            }
+        }else{
+             $("billingInfo").style.display = "none";
+             ReadOnlyForm("deliveryLocation", false);
+             ReadOnlyForm("order", false);
+             $("btnFinishBuildPizza").innerHTML = "Finished Building Pizza";
+             e.stopImmediatePropagation();
+        }
+      
+    });
+    
+    $("proceedToCheckout").addEventListener("click", function(){
         $("Confirmation_buildingPizza").style.display = "none";
         $("billingInfo").style.display = "block";
+        ReadOnlyForm("deliveryLocation", true);
+        ReadOnlyForm("order", true);
+        $("btnFinishBuildPizza").innerHTML = "Change Delivery Location or Order";
         window.location.hash = "billingInfo";
     });
     
-    $("name").addEventListener("mouseout", function(e){
+    $("name").addEventListener("blur", function(e){
         if(isValidFullName(e.currentTarget.value)) {
-            validateInput(e.currentTarget.id, true);   
+            validateInput(e.currentTarget.id, true, "looks good");   
         } else {
-            validateInput(e.currentTarget.id, false); 
+            validateInput(e.currentTarget.id, false, "invalid input"); 
         }
     });
     
-    $("zipcode").addEventListener("mouseout", function(e){
+    $("zipcode").addEventListener("blur", function(e){
         if(isValidUSZip(e.currentTarget.value)) {
-            validateInput(e.currentTarget.id, true);   
+            validateInput(e.currentTarget.id, true, "looks good");   
         } else {
-            validateInput(e.currentTarget.id, false); 
+            validateInput(e.currentTarget.id, false, "invalid input"); 
         }
     });
     
-    $("phoneno").addEventListener("mouseout", function(e){
+    $("phoneno").addEventListener("blur", function(e){
         if(isValidPhoneNumber(e.currentTarget.value)) {
-            validateInput(e.currentTarget.id, true);   
+            validateInput(e.currentTarget.id, true, "looks good");   
         } else {
-            validateInput(e.currentTarget.id, false); 
+            validateInput(e.currentTarget.id, false, "invalid input"); 
         }
     });
     
-    $("email").addEventListener("mouseout", function(e){
+    $("email").addEventListener("blur", function(e){
         if(isValidEmail(e.currentTarget.value)) {
-            validateInput(e.currentTarget.id, true);   
+            validateInput(e.currentTarget.id, true, "looks good");   
         } else {
-            validateInput(e.currentTarget.id, false); 
+            validateInput(e.currentTarget.id, false, "invalid input"); 
         }
     });
     
-    $("state").addEventListener("mouseout", function(e){
+    $("state").addEventListener("blur", function(e){
         if(isValidState(e.currentTarget.value)) {
-            validateInput(e.currentTarget.id, true);   
+            validateInput(e.currentTarget.id, true, "looks good");   
         } else {
-            validateInput(e.currentTarget.id, false); 
+            validateInput(e.currentTarget.id, false, "invalid input"); 
         }
     });
 });
