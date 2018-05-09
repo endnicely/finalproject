@@ -194,7 +194,7 @@ window.addEventListener("load", function () {
     var optdoughItems = [].slice.call(optdoughlist);
     
     //  hide the input for billing information initially
-    $("billingInfo").style.display ="none";
+    //$("billingInfo").style.display ="none";
     
     //  hide the input for other address type initially
     $("otherAddressType").style.display = "none";
@@ -308,6 +308,18 @@ window.addEventListener("load", function () {
             validateInput(e.currentTarget.id, false, "invalid input"); 
         }
     });
+    
+    $("sameAsDeli").addEventListener("click", function(){
+        if(this.checked) {
+           $("cardHolderName").value = $("name").value;
+           $("bStAddress").value = $("stAddress").value;
+           $("bSuiteNo").value = $("suiteno").value;
+           $("bCity").value = $("city").value;
+           $("bState").value = $("state").value;
+           $("bZipCode").value = $("zipcode").value; 
+        }
+    });
+   
 });
 
 
