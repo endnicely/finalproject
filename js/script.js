@@ -31,9 +31,16 @@ function validateInput(inputName, isValid, feedback) {
     
     $(inputName).classList.remove(removeClass);
     $(inputName).classList.add(addClass);
-    $(inputName).nextElementSibling.classList.remove(removeClass_feedback);
-    $(inputName).nextElementSibling.classList.add(addClass_feedback);
-    $(inputName).nextElementSibling.innerHTML = feedback;
+    if($(inputName).nextElementSibling.nodeName !== "DIV") {                          
+        $(inputName).nextElementSibling.nextElementSibling.classList.remove(removeClass_feedback);
+         $(inputName).nextElementSibling.nextElementSibling.classList.add(addClass_feedback);
+         $(inputName).nextElementSibling.nextElementSibling.innerHTML = feedback;
+    } else {
+      $(inputName).nextElementSibling.classList.remove(removeClass_feedback);
+      $(inputName).nextElementSibling.classList.add(addClass_feedback);
+      $(inputName).nextElementSibling.innerHTML = feedback;
+    }
+      
 }
 
 
@@ -162,6 +169,19 @@ function isValidPhoneNumber(phoneNo) {
 
 function isValidEmail(email) {
     return /\S+@\S+\.\S+/.test(email);
+}
+
+function isValidCVV(cvv) {
+    return /^[0-9]{3,4}$/.test(cvv);
+}
+
+function isValidExpirationDate(month,year){
+    var cur_year = new Date().getFullYear();
+    if(cur_year === year) {
+        var cur_month = new Date().getMonth();
+        return month >= cur_month;
+    } 
+    return true;
 }
 
 function calculateTotal(){
@@ -384,6 +404,31 @@ window.addEventListener("load", function () {
         }
     });
    
+    $("cvv").addEventListener("blur", function(e){
+        if(isValidCVV(e.currentTarget.value)) {
+            validateInput(e.currentTarget.id, true, "looks good");   
+        } else {
+            validateInput(e.currentTarget.id, false, "invalid input"); 
+        }
+    });
+    
+     $("expiryMonth").addEventListener("blur", function(e){
+         if(isInputEmpty(e.currentTarget.value)) {
+            validateInput(e.currentTarget.id, false, "required"); 
+         }
+         if(isValidExpirationDate(e.currentTarget.value, $("expiryYear").value)) {
+              validateInput("expiryYear", true, "looks good"); 
+         } else {
+            validateInput("expiryYear", false, "invalid input"); 
+        }
+//        if(isValidCVV(e.currentTarget.value)) {
+//            validateInput(e.currentTarget.id, true, "looks good");   
+//        } else {
+//            validateInput(e.currentTarget.id, false, "invalid input"); 
+//        }
+    });
+    
+    
 });
 
 
