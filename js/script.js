@@ -24,22 +24,38 @@ function ReadOnlyForm(formId, isReadOnly) {
 }
 
 function validateInput(inputName, isValid, feedback) {
-    var removeClass = isValid ? "is-invalid" : "is-valid";
-    var addClass = isValid ? "is-valid" : "is-invalid";
-    var removeClass_feedback = isValid ? "invalid-feedback" : "valid-feedback";
-    var addClass_feedback = isValid ? "valid-feedback" : "invalid-feedback";
-    
-    $(inputName).classList.remove(removeClass);
-    $(inputName).classList.add(addClass);
-    if($(inputName).nextElementSibling.nodeName !== "DIV") {                          
-        $(inputName).nextElementSibling.nextElementSibling.classList.remove(removeClass_feedback);
-         $(inputName).nextElementSibling.nextElementSibling.classList.add(addClass_feedback);
-         $(inputName).nextElementSibling.nextElementSibling.innerHTML = feedback;
-    } else {
-      $(inputName).nextElementSibling.classList.remove(removeClass_feedback);
-      $(inputName).nextElementSibling.classList.add(addClass_feedback);
-      $(inputName).nextElementSibling.innerHTML = feedback;
+    if(isValid!=="unknown"){
+        var removeClass = isValid ? "is-invalid" : "is-valid";
+        var addClass = isValid ? "is-valid" : "is-invalid";
+        var removeClass_feedback = isValid ? "invalid-feedback" : "valid-feedback";
+        var addClass_feedback = isValid ? "valid-feedback" : "invalid-feedback";
+        $(inputName).classList.remove(removeClass);
+        $(inputName).classList.add(addClass);
+        if($(inputName).nextElementSibling.nodeName !== "DIV") {      
+            $(inputName).nextElementSibling.nextElementSibling.classList.remove(removeClass_feedback);
+             $(inputName).nextElementSibling.nextElementSibling.classList.add(addClass_feedback);
+             $(inputName).nextElementSibling.nextElementSibling.innerHTML = feedback;
+        } else {
+          $(inputName).nextElementSibling.classList.remove(removeClass_feedback);
+          $(inputName).nextElementSibling.classList.add(addClass_feedback);
+          $(inputName).nextElementSibling.innerHTML = feedback;
+        }
+    }else{
+        $(inputName).classList.remove("is-invalid");
+        $(inputName).classList.remove("is-valid");
+        if($(inputName).nextElementSibling.nodeName !== "DIV") {      
+            $(inputName).nextElementSibling.nextElementSibling.classList.remove("is-invalid");
+             $(inputName).nextElementSibling.nextElementSibling.classList.remove("is-valid");
+             $(inputName).nextElementSibling.nextElementSibling.innerHTML = feedback;
+        } else {
+          $(inputName).nextElementSibling.classList.remove("is-invalid");
+          $(inputName).nextElementSibling.classList.remove("is-valid");
+          $(inputName).nextElementSibling.innerHTML = feedback;
+        }
     }
+   
+    
+    
       
 }
 
@@ -175,11 +191,12 @@ function isValidCVV(cvv) {
     return /^[0-9]{3,4}$/.test(cvv);
 }
 
-function isValidExpirationDate(month,year){
+function isValidExpirationDate(month,year){ 
     var cur_year = new Date().getFullYear();
-    if(cur_year === year) {
-        var cur_month = new Date().getMonth();
-        return month >= cur_month;
+
+    if(cur_year == parseInt(year,10)) {     
+        var cur_month = new Date().getMonth() + 1; // getMonth() returns 0=January, 1=February 
+        return parseInt(month,10) >= cur_month;
     } 
     return true;
 }
@@ -413,19 +430,85 @@ window.addEventListener("load", function () {
     });
     
      $("expiryMonth").addEventListener("blur", function(e){
-         if(isInputEmpty(e.currentTarget.value)) {
-            validateInput(e.currentTarget.id, false, "required"); 
-         }
-         if(isValidExpirationDate(e.currentTarget.value, $("expiryYear").value)) {
-              validateInput("expiryYear", true, "looks good"); 
+         if(isInputEmpty(e.currentTarget.id)) {
+            validateInput(e.currentTarget.id, false, "Please select a month"); 
+         } else if (isInputEmpty("expiryYear")) { 
+            validateInput(e.currentTarget.id, true, "Please select a year"); 
+         } else if (isValidExpirationDate(e.currentTarget.value, $("expiryYear").value)) {
+             validateInput("expiryMonth", true, "looks good"); 
+             validateInput("expiryYear", true, "looks good"); 
          } else {
-            validateInput("expiryYear", false, "invalid input"); 
-        }
-//        if(isValidCVV(e.currentTarget.value)) {
-//            validateInput(e.currentTarget.id, true, "looks good");   
-//        } else {
-//            validateInput(e.currentTarget.id, false, "invalid input"); 
+            validateInput("expiryMonth", false, "Your card is expired");
+            validateInput("expiryYear", false, "Your card is expired"); 
+         }
+         
+//         if(isValidExpirationDate(e.currentTarget.value, $("expiryYear").value)) {
+//              validateInput("expiryYear", true, "looks good"); 
+//         } else {
+//            validateInput("expiryYear", false, "invalid input"); 
 //        }
+
+    });
+    
+     $("expiryYear").addEventListener("blur", function(e){
+         if(isInputEmpty(e.currentTarget.id)) {
+            validateInput(e.currentTarget.id, false, "Please select a year"); 
+         } else if (isInputEmpty("expiryMonth")) { 
+            validateInput(e.currentTarget.id, true, "Please select a month"); 
+         } else if (isValidExpirationDate($("expiryMonth").value, e.currentTarget.value)) {
+             validateInput("expiryMonth", true, "looks good"); 
+             validateInput("expiryYear", true, "looks good"); 
+         } else {
+            validateInput("expiryMonth", false, "Your card is expired"); 
+            validateInput("expiryYear", false, "Your card is expired");
+             
+         }
+    });
+    
+    $("expiryYear").addEventListener("blur", function(e){
+         if(isInputEmpty(e.currentTarget.id)) {
+            validateInput(e.currentTarget.id, false, "Please select a year"); 
+         } else if (isInputEmpty("expiryMonth")) { 
+            validateInput(e.currentTarget.id, true, "Please select a month"); 
+         } else if (isValidExpirationDate($("expiryMonth").value, e.currentTarget.value)) {
+             validateInput("expiryMonth", true, "looks good"); 
+             validateInput("expiryYear", true, "looks good"); 
+         } else {
+            validateInput("expiryMonth", false, "Your card is expired"); 
+            validateInput("expiryYear", false, "Your card is expired");
+             
+         }
+    });
+    function isCardNoValidPrefix(cardNo){
+        "use strict";
+        if(cardNo!==""){
+            var valid1stDigits = ["4","5","3"];
+            var validPrefix2Digits = ["40","41", "42", "43", "44", "45", "46", "47", "48", "49","51","52","53","54","55","37"];
+            var stringfyCardNo = cardNo.toString();
+            if(stringfyCardNo.length === 1){
+                return valid1stDigits.indexOf(stringfyCardNo[0]) > -1;
+            }
+            else {
+                return validPrefix2Digits.indexOf(stringfyCardNo.substr(0,2)) > -1 ;
+            }
+            
+        } else {
+            return false;
+        }  
+    }
+    $("cardNumber").addEventListener("keyup",function(e){
+           "use strict";
+           this.value.replace(/\s/g, "");
+           var cardNumber = parseInt(e.currentTarget.value,10);
+           
+           if (isNaN(cardNumber)) {
+             validateInput(e.currentTarget.id, false, "Credit Card can't contain non numeric character!");
+           }else if (!isCardNoValidPrefix(cardNumber)){
+              validateInput(e.currentTarget.id, false, "Sorry! Only Visa, MasterCard or American Express are accepted"); 
+           }else{
+              validateInput(e.currentTarget.id, "unknown", "");
+           }
+                                     
     });
     
     
