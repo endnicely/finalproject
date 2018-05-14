@@ -50,8 +50,8 @@ function validateInput(inputName, isValid, feedback) {
              $(inputName).nextElementSibling.nextElementSibling.classList.remove("is-valid");
              $(inputName).nextElementSibling.nextElementSibling.innerHTML = feedback;
         } else {
-          $(inputName).nextElementSibling.classList.remove("is-invalid");
-          $(inputName).nextElementSibling.classList.remove("is-valid");
+          $(inputName).nextElementSibling.classList.remove("invalid-feedback");
+          $(inputName).nextElementSibling.classList.remove("valid-feedback");
           $(inputName).nextElementSibling.innerHTML = feedback;
         }
     }  
@@ -59,22 +59,22 @@ function validateInput(inputName, isValid, feedback) {
 
 function isValidDeliveryForm() {
     "use strict";
-    var isValid = false;
+    var isValid=[];
     var arrRequired = ["name", "addressType", "stAddress", "city", "state", "zipcode", "phoneno", "email"];
     for (var i = 0; i< arrRequired.length; i++) {
         if(isInputEmpty(arrRequired[i])) {
             validateInput(arrRequired[i], false, $(arrRequired[i]).name + " is required");
-            isValid = false;
+            isValid.push(false);
         } else {
                 switch(arrRequired[i]) {
                     case "name":
-                        isValid = isValidFullName($(arrRequired[i]).value);
+                        isValid.push(isValidFullName($(arrRequired[i]).value));
 //                        isValid ? validateInput(arrRequired[i], true, "looks good") : validateInput(arrRequired[i], false, $(arrRequired[i]).name + "is invalid");
                         break;
                     case "addressType":
                         if($(arrRequired[i]).value === "other" && isInputEmpty("otherAddressType") ) {
                              validateInput("otherAddressType", false, $("otherAddressType").value + "is required");
-                            isValid = false;
+                            isValid.push(false);
                         } else if ($(arrRequired[i]).value === "apartment" && isInputEmpty("suiteno") ) {
                              validateInput("suiteno", false, $("suiteno").value + "is required");
                         }
@@ -83,31 +83,31 @@ function isValidDeliveryForm() {
 //                        }
                         break;
                     case "stAddress":
-                        isValid = isValidAddress($(arrRequired[i]).value);
+                        isValid.push(isValidAddress($(arrRequired[i]).value));
 //                        isValid ? validateInput(arrRequired[i], true, "looks good") : validateInput(arrRequired[i], false, $(arrRequired[i]).name + "is invalid");
                         break;
                     case "city":
-                        isValid = isValidCity($(arrRequired[i]).value);
+                        isValid.push(isValidCity($(arrRequired[i]).value));
                         break;
                     case "state":
-                        isValid = isValidState($(arrRequired[i]).value);
+                        isValid.push(isValidState($(arrRequired[i]).value));
 //                        isValid ? validateInput(arrRequired[i], true, "looks good") : validateInput(arrRequired[i], false, $(arrRequired[i]).name + "is invalid");
                         break;
                     case "zipcode":
-                        isValid = isValidUSZip($(arrRequired[i]).value);
+                        isValid.push(isValidUSZip($(arrRequired[i]).value));
 //                        isValid ? validateInput(arrRequired[i], true, "looks good") : validateInput(arrRequired[i], false, $(arrRequired[i]).name + "is invalid");
                         break;
                     case "phoneon":
-                        isValid = isValidPhoneNumber($(arrRequired[i]).value);
+                        isValid.push(isValidPhoneNumber($(arrRequired[i]).value));
 //                        isValid ? validateInput(arrRequired[i], true, "looks good") : validateInput(arrRequired[i], false, $(arrRequired[i]).name + "is invalid");
                         break;
                     case "email":
-                        isValid = isValidEmail($(arrRequired[i]).value);
+                        isValid.push(isValidEmail($(arrRequired[i]).value));
 //                        isValid ? validateInput(arrRequired[i], true, "looks good") : validateInput(arrRequired[i], false, $(arrRequired[i]).name + "is invalid");
                         break;
                     default:
                 }
-                isValid ? validateInput(arrRequired[i], true, "looks good") : validateInput(arrRequired[i], false, $(arrRequired[i]).name + " is invalid");
+                isValid[i] ? validateInput(arrRequired[i], true, "looks good") : validateInput(arrRequired[i], false, $(arrRequired[i]).name + " is invalid");
         }
 //        } else if (arrRequired[i] === "addressType" && $(arrRequired[i]).value !== "") {
 //            $(arrRequired[i]).classList.remove('is-invalid');
@@ -128,8 +128,7 @@ function isValidDeliveryForm() {
 //        }
     }
     
-    
-    return isValid;    
+    return !isValid.includes(false);    
 }
 
 function isInputEmpty(input) {
@@ -454,10 +453,15 @@ window.addEventListener("load", function () {
     
      $("expiryMonth").addEventListener("blur", function(e){
          "use strict";
-         if(isInputEmpty(e.currentTarget.id)) {
-            validateInput(e.currentTarget.id, false, "Please select a month"); 
-         } else if (isInputEmpty("expiryYear")) { 
-            validateInput(e.currentTarget.id, true, "Please select a year"); 
+         if (isInputEmpty(e.currentTarget.id) && isInputEmpty("expiryYear")){
+            validateInput(e.currentTarget.id, false, "Please select a month and a year");
+            validateInput("expiryYear", false, "Please select a month and a year");
+         } else if (isInputEmpty(e.currentTarget.id)) {
+            validateInput("expiryYear", "unknown", "");
+            validateInput(e.currentTarget.id, false, "Please select a month");         
+         } else if (isInputEmpty("expiryYear")) {
+            validateInput("expiryYear", false, "");
+            validateInput(e.currentTarget.id, "unknown", "Please select a year");
          } else if (isValidExpirationDate(e.currentTarget.value, $("expiryYear").value)) {
              validateInput("expiryMonth", true, "looks good"); 
              validateInput("expiryYear", true, "looks good"); 
@@ -465,46 +469,32 @@ window.addEventListener("load", function () {
             validateInput("expiryMonth", false, "Your card is expired");
             validateInput("expiryYear", false, "Your card is expired"); 
          }
-         
-//         if(isValidExpirationDate(e.currentTarget.value, $("expiryYear").value)) {
-//              validateInput("expiryYear", true, "looks good"); 
-//         } else {
-//            validateInput("expiryYear", false, "invalid input"); 
-//        }
 
     });
     
      $("expiryYear").addEventListener("blur", function(e){
          "use strict";
-         if(isInputEmpty(e.currentTarget.id)) {
-            validateInput(e.currentTarget.id, false, "Please select a year"); 
-         } else if (isInputEmpty("expiryMonth")) { 
-            validateInput(e.currentTarget.id, true, "Please select a month"); 
+         if (isInputEmpty("expiryMonth") && isInputEmpty(e.currentTarget.id)) {
+            validateInput(e.currentTarget.id, false, "Please select a month and a year");
+            validateInput("expiryMonth", false, "Please select a month and a year");
+         } else if (isInputEmpty(e.currentTarget.id)) {
+            validateInput(e.currentTarget.id, false, "");
+            validateInput("expiryMonth", "unknown", "Please select a year");
+            //validateInput(e.currentTarget.id, false, "Please select a year");
+         } else if (isInputEmpty("expiryMonth")) {
+            validateInput(e.currentTarget.id, "unknown", "");
+            validateInput("expiryMonth", false, "Please select a month");     
+            //validateInput(e.currentTarget.id, false, "Please select a month");
          } else if (isValidExpirationDate($("expiryMonth").value, e.currentTarget.value)) {
              validateInput("expiryMonth", true, "looks good"); 
              validateInput("expiryYear", true, "looks good"); 
          } else {
             validateInput("expiryMonth", false, "Your card is expired"); 
-            validateInput("expiryYear", false, "Your card is expired");
-             
+            validateInput("expiryYear", false, "Your card is expired");       
          }
     });
     
-    $("expiryYear").addEventListener("blur", function(e){
-         "use strict";
-         if(isInputEmpty(e.currentTarget.id)) {
-            validateInput(e.currentTarget.id, false, "Please select a year"); 
-         } else if (isInputEmpty("expiryMonth")) { 
-            validateInput(e.currentTarget.id, true, "Please select a month"); 
-         } else if (isValidExpirationDate($("expiryMonth").value, e.currentTarget.value)) {
-             validateInput("expiryMonth", true, "looks good"); 
-             validateInput("expiryYear", true, "looks good"); 
-         } else {
-            validateInput("expiryMonth", false, "Your card is expired"); 
-            validateInput("expiryYear", false, "Your card is expired");
-             
-         }
-    });
+
     function isCardNoValidPrefix(cardNo){
         "use strict";
         if(cardNo!==""){
@@ -566,9 +556,8 @@ window.addEventListener("load", function () {
     
     function isValidCreditCard(value) {
         "use strict";
-        if(isNotNum(value) && isCardNoValidPrefix(value) && isValidCardLength(value)) {
-            var cDigit="", nCheck = 0, nDigit = 0, bEven = false;  
-            for (var n = value.length - 1; n >= 0; n--) {
+        var cDigit="", nCheck = 0, nDigit = 0, bEven = false;  
+        for (var n = value.length - 1; n >= 0; n--) {
             cDigit = value.charAt(n);
             nDigit = parseInt(cDigit, 10);
 
@@ -577,22 +566,19 @@ window.addEventListener("load", function () {
                     nDigit = nDigit.toString();
                 }
             }
-            
+
             if(typeof nDigit === 'string' || nDigit instanceof String) { 
 
                 nCheck += parseInt(nDigit[0], 10) + parseInt(nDigit[1], 10);
             }
             else {
                 nCheck += nDigit;
-               
+
             }
-         
+
             bEven = !bEven;
         }
-            return (nCheck % 10) == 0;
-        } else {
-            return false;
-        }
+        return (nCheck % 10) == 0;
     }
     
     function creditCardType(cardNo){
@@ -611,97 +597,91 @@ window.addEventListener("load", function () {
     
     function isValidBillingForm() {
     "use strict";
-    var isValid = false;
+    var isInputsValid = [], isSelectsValid = [];
     var inputs = document.forms["billingInfo"].querySelectorAll("input[type=text]");
-    var selects = document.forms["billingInfo"].getElementsByTagName('select');
+    
     for (var i = 0; i< inputs.length; i++) {
         if(isInputEmpty(inputs[i].id)) {
             validateInput(inputs[i].id, false, inputs[i].name + " is required");
+            isInputsValid.push(false);
         } else {
              switch(inputs[i].id) {
                     case "cardHolderName":
-                        isValid = isValidFullName($(inputs[i].id).value);
+                        isInputsValid.push(isValidFullName($(inputs[i].id).value));
                         break;
                     case "cardNumber":
-                        isValid = isValidCreditCard($(inputs[i].id).value);
+                        isInputsValid.push(isValidCreditCard($(inputs[i].id).value));
                         break;
                     case "bStAddress":
-                        isValid = isValidAddress($(inputs[i].id).value);
+                        isInputsValid.push(isValidAddress($(inputs[i].id).value));
                         break;
                     case "bCity":
-                        isValid = isValidCity($(inputs[i].id).value);
+                        isInputsValid.push(isValidCity($(inputs[i].id).value));
                         break;
                     case "bState":
-                        isValid = isValidState($(inputs[i].id).value);
+                        isInputsValid.push(isValidState($(inputs[i].id).value));
                         break;
                     case "bZipCode":
-                        isValid = isValidUSZip($(inputs[i].id).value);
+                        isInputsValid.push(isValidUSZip($(inputs[i].id).value));
                         break;
                     case "cvv":
-                        isValid = isValidCVV($(inputs[i].id).value);
+                        isInputsValid.push(isValidCVV($(inputs[i].id).value));
                         break;
                     default:
             }
-            isValid ? validateInput(inputs[i].id, true, "looks good") : validateInput(inputs[i].id, false, inputs[i].name + " is invalid");
+            isInputsValid[i] ? validateInput(inputs[i].id, true, "looks good") : validateInput(inputs[i].id, false, inputs[i].name + " is invalid");
         }
-       
     }
+    //window.alert(isInputsValid);
         
+    var selects = document.forms["billingInfo"].getElementsByTagName('select'); 
     var message="";
     for (var j = 0; j< selects.length; j++) {
         if(isInputEmpty(selects[j].id)) {
+            isSelectsValid.push(false);
             message += selects[j].name + " ";
             validateInput(selects[j].id, false, message + "is required");
         } else {
            if(j !== 0) {
-               isValid = isValidExpirationDate(selects[j-1],selects[j]);
+               isSelectsValid.push(isValidExpirationDate(selects[j-1],selects[j]));
            }  
         }
-        isValid ? validateInput(selects[j].id, true, "looks good") : validateInput(selects[j].id, false, selects[j].name + " is invalid");
+        isSelectsValid[i] ? validateInput(selects[j].id, true, "looks good") : validateInput(selects[j].id, false, selects[j].name + " is invalid");
     }
-    return isValid;
+    //window.alert(isSelectsValid);
         
-//        if(isInputEmpty(arrRequired[i])) {
-//            validateInput(arrRequired[i], false, $(arrRequired[i]).name + " is required");
-//            isValid = false;
-//        } else {
-//                switch(arrRequired[i]) {
-//                    case "name":
-//                        isValid = isValidFullName($(arrRequired[i]).value);
-//                        break;
-//                    case "addressType":
-//                        if($(arrRequired[i]).value === "other" && isInputEmpty("otherAddressType") ) {
-//                             validateInput("otherAddressType", false, $("otherAddressType").value + "is required");
-//                            isValid = false;
-//                        } else if ($(arrRequired[i]).value === "apartment" && isInputEmpty("suiteno") ) {
-//                             validateInput("suiteno", false, $("suiteno").value + "is required");
-//                        }
-//                        break;
-//                    case "stAddress":
-//                        isValid = isValidAddress($(arrRequired[i]).value);
-//                        break;
-//                    case "city":
-//                        isValid = isValidCity($(arrRequired[i]).value);
-//                        break;
-//                    case "state":
-//                        isValid = isValidState($(arrRequired[i]).value);
-//                        break;
-//                    case "zipcode":
-//                        isValid = isValidUSZip($(arrRequired[i]).value);
-//                        break;
-//                    case "phoneon":
-//                        isValid = isValidPhoneNumber($(arrRequired[i]).value);
-//                        break;
-//                    case "email":
-//                        isValid = isValidEmail($(arrRequired[i]).value);
-//                        break;
-//                    default:
-//                }
-//                isValid ? validateInput(arrRequired[i], true, "looks good") : validateInput(arrRequired[i], false, $(arrRequired[i]).name + " is invalid");
-//        }
-//    }
-//    return isValid;    
+    return !isInputsValid.includes(false) &&  !isSelectsValid.includes(false);
+          
 }
+     function showHint(cardNo, creditCardInputId){
+        "use strict";
+        var cardNoLength = cardNo.length;
+        switch(creditCardType(cardNo)) {
+            case "Visa":
+                if (cardNoLength < 16 && cardNoLength !=13) {
+                    return  validateInput(creditCardInputId, "unknown", "Valid number of digits for Visa is 13 or 16");
+                } else if (cardNoLength > 16) {
+                    return  validateInput(creditCardInputId, false, "Your Visa contains more than 16 digits which is invalid.");
+                }
+                break;
+            case "Master":
+                if (cardNoLength < 16) {
+                    return  validateInput(creditCardInputId,"unknown", "Valid number of digits for Maseter Card is 16");
+                } else if (cardNo.length > 16) {
+                    return  validateInput(creditCardInputId, false, "Your Master Card contains more than 16 digits which is invalid.");
+                }
+                break;
+            case "American Express":       
+                if (cardNoLength < 15) {
+                    return  validateInput(creditCardInputId, "unknown", "Valid number of digits for American Express is 15");
+                } else if (cardNo.length > 15) {
+                    return  validateInput(creditCardInputId, false, "Your American Express contains more than 15 digits which is invalid.");
+                }
+                break;
+            default:
+                break;
+        }
+    }
     $("cardNumber").addEventListener("keyup",function(e){
        "use strict";
        var cardNo = e.currentTarget.value;
@@ -716,7 +696,9 @@ window.addEventListener("load", function () {
           //not allow typing unacceptable card prefix in credit card
           this.value = this.value.slice(0, -1);
        }else if (!(isValidCardLength(cardNo))){
-          validateInput(creditCardInputId, false, "Valid number of digits for Visa (13 or 16), MasterCard(16), American Express(15)");
+          
+          showHint(cardNo,creditCardInputId);
+          //validateInput(creditCardInputId, false, "Valid number of digits for Visa (13 or 16), MasterCard(16), American Express(15)");
        }else if(!isValidCreditCard(cardNo)){
           validateInput(creditCardInputId, false, "Invalid Card Number");
        }else{
