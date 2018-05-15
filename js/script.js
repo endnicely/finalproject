@@ -56,7 +56,10 @@ function validateInput(inputName, isValid, feedback) {
         }
     }  
 }
-
+function isValidSuiteNo(suiteNo) {
+    "use strict";
+    return /^[A-Za-z0-9 _]$/.test(suiteNo);
+}
 function isValidDeliveryForm() {
     "use strict";
     var isValid=[];
@@ -69,65 +72,51 @@ function isValidDeliveryForm() {
                 switch(arrRequired[i]) {
                     case "name":
                         isValid.push(isValidFullName($(arrRequired[i]).value));
-//                        isValid ? validateInput(arrRequired[i], true, "looks good") : validateInput(arrRequired[i], false, $(arrRequired[i]).name + "is invalid");
+                        isValidFullName($(arrRequired[i]).value) ? validateInput(arrRequired[i], true, "looks good") : validateInput(arrRequired[i], false, $(arrRequired[i]).name + "is invalid");
                         break;
                     case "addressType":
                         if($(arrRequired[i]).value === "other" && isInputEmpty("otherAddressType") ) {
-                             validateInput("otherAddressType", false, $("otherAddressType").value + "is required");
+                             validateInput("otherAddressType", false, $("otherAddressType").name + " is required");
                             isValid.push(false);
-                        } else if ($(arrRequired[i]).value === "apartment" && isInputEmpty("suiteno") ) {
-                             validateInput("suiteno", false, $("suiteno").value + "is required");
+                        } else if ($(arrRequired[i]).value !== "house" && isInputEmpty("suiteno") ) {
+                             validateInput("suiteno", false, $("suiteno").name + " is required");
+                        } else if ($(arrRequired[i]).value !== "house" && isValidSuiteNo("suiteno") ) {
+                             validateInput("suiteno", false, $("suiteno").name + " is invalid");
                         }
-//                        }else if {
-//                            validateInput(arrRequired[i], true, "looks good");
-//                        }
+                        else {
+                            validateInput(arrRequired[i], true, "looks good");
+                            validateInput("suiteno", true, "looks good");
+                        }
                         break;
                     case "stAddress":
                         isValid.push(isValidAddress($(arrRequired[i]).value));
-//                        isValid ? validateInput(arrRequired[i], true, "looks good") : validateInput(arrRequired[i], false, $(arrRequired[i]).name + "is invalid");
+                        isValidAddress($(arrRequired[i]).value) ? validateInput(arrRequired[i], true, "looks good") : validateInput(arrRequired[i], false, $(arrRequired[i]).name + "is invalid");
                         break;
                     case "city":
                         isValid.push(isValidCity($(arrRequired[i]).value));
+                        isValidCity($(arrRequired[i]).value) ? validateInput(arrRequired[i], true, "looks good") : validateInput(arrRequired[i], false, $(arrRequired[i]).name + "is invalid");
                         break;
                     case "state":
                         isValid.push(isValidState($(arrRequired[i]).value));
-//                        isValid ? validateInput(arrRequired[i], true, "looks good") : validateInput(arrRequired[i], false, $(arrRequired[i]).name + "is invalid");
+                        isValidState($(arrRequired[i]).value) ? validateInput(arrRequired[i], true, "looks good") : validateInput(arrRequired[i], false, $(arrRequired[i]).name + "is invalid");
                         break;
                     case "zipcode":
                         isValid.push(isValidUSZip($(arrRequired[i]).value));
-//                        isValid ? validateInput(arrRequired[i], true, "looks good") : validateInput(arrRequired[i], false, $(arrRequired[i]).name + "is invalid");
+                        isValidUSZip($(arrRequired[i]).value) ? validateInput(arrRequired[i], true, "looks good") : validateInput(arrRequired[i], false, $(arrRequired[i]).name + "is invalid");
                         break;
                     case "phoneon":
                         isValid.push(isValidPhoneNumber($(arrRequired[i]).value));
-//                        isValid ? validateInput(arrRequired[i], true, "looks good") : validateInput(arrRequired[i], false, $(arrRequired[i]).name + "is invalid");
+                        isValidPhoneNumber($(arrRequired[i]).value) ? validateInput(arrRequired[i], true, "looks good") : validateInput(arrRequired[i], false, $(arrRequired[i]).name + "is invalid");
                         break;
                     case "email":
                         isValid.push(isValidEmail($(arrRequired[i]).value));
-//                        isValid ? validateInput(arrRequired[i], true, "looks good") : validateInput(arrRequired[i], false, $(arrRequired[i]).name + "is invalid");
+                        isValidEmail($(arrRequired[i]).value) ? validateInput(arrRequired[i], true, "looks good") : validateInput(arrRequired[i], false, $(arrRequired[i]).name + "is invalid");
                         break;
                     default:
                 }
-                isValid[i] ? validateInput(arrRequired[i], true, "looks good") : validateInput(arrRequired[i], false, $(arrRequired[i]).name + " is invalid");
+                //isValid[i] ? validateInput(arrRequired[i], true, "looks good") : validateInput(arrRequired[i], false, $(arrRequired[i]).name + " is invalid");
         }
-//        } else if (arrRequired[i] === "addressType" && $(arrRequired[i]).value !== "") {
-//            $(arrRequired[i]).classList.remove('is-invalid');
-//            $(arrRequired[i]).classList.add('is-valid');
-//           
-//            if($(arrRequired[i]).value !== "other") {
-//                validateInput(arrRequired[i], true);
-//            } else if ($("otherAddressType").value === "") {
-//                validateInput("otherAddressType", false, "required information");
-//                invalid = true;
-//            } else {
-//                validateInput("otherAddressType", true, "looks good");
-//                invalid = false;
-//            }
-//        } else {
-//            validateInput(arrRequired[i], true, "looks good");
-//            invalid = false;
-//        }
     }
-    
     return !isValid.includes(false);    
 }
 
@@ -302,7 +291,7 @@ window.addEventListener("load", function () {
         "use strict";
         if (this.innerHTML.trim() === "Finished Building Pizza"){
             if((!isValidDeliveryForm()) || (!isValidOrderForm())) {
-                e.stopImmediatePropagation();      
+                e.stopImmediatePropagation();     
             }
         }else{
              $("billingInfo").style.display = "none";
@@ -659,21 +648,25 @@ window.addEventListener("load", function () {
         switch(creditCardType(cardNo)) {
             case "Visa":
                 if (cardNoLength < 16 && cardNoLength !=13) {
-                    return  validateInput(creditCardInputId, "unknown", "Valid number of digits for Visa is 13 or 16");
+                    //return  validateInput(creditCardInputId, "unknown", "Valid number of digits for Visa is 13 or 16");
+                    return  validateInput(creditCardInputId, false, "Valid number of digits for Visa is 13 or 16");
                 } else if (cardNoLength > 16) {
                     return  validateInput(creditCardInputId, false, "Your Visa contains more than 16 digits which is invalid.");
                 }
                 break;
             case "Master":
                 if (cardNoLength < 16) {
-                    return  validateInput(creditCardInputId,"unknown", "Valid number of digits for Maseter Card is 16");
+                    //return  validateInput(creditCardInputId,"unknown", "Valid number of digits for Maseter Card is 16");
+                    return  validateInput(creditCardInputId, false, "Valid number of digits for Maseter Card is 16");
                 } else if (cardNo.length > 16) {
                     return  validateInput(creditCardInputId, false, "Your Master Card contains more than 16 digits which is invalid.");
                 }
                 break;
             case "American Express":       
                 if (cardNoLength < 15) {
-                    return  validateInput(creditCardInputId, "unknown", "Valid number of digits for American Express is 15");
+                    //return  validateInput(creditCardInputId, "unknown", "Valid number of digits for American Express is 15"); 
+                    return  validateInput(creditCardInputId, false, "Valid number of digits for American Express is 15");
+                    
                 } else if (cardNo.length > 15) {
                     return  validateInput(creditCardInputId, false, "Your American Express contains more than 15 digits which is invalid.");
                 }
