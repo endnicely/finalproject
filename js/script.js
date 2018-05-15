@@ -73,11 +73,12 @@ function isValidDeliveryForm() {
                         break;
                     case "addressType":
                         if($(arrRequired[i]).value === "other" && isInputEmpty("otherAddressType") ) {
-                             validateInput("otherAddressType", false, $("otherAddressType").value + "is required");
+                            validateInput("otherAddressType", false, $("otherAddressType").value + " is required");
                             isValid.push(false);
-                        } else if ($(arrRequired[i]).value === "apartment" && isInputEmpty("suiteno") ) {
-                             validateInput("suiteno", false, $("suiteno").value + "is required");
-                        }
+                        } else if ($(arrRequired[i]).value !== "house" && isInputEmpty("suiteno") ) {
+                            validateInput("suiteno", false, $("suiteno").value + " is required");
+                            isValid.push(false);
+                        } 
 //                        }else if {
 //                            validateInput(arrRequired[i], true, "looks good");
 //                        }
@@ -127,7 +128,7 @@ function isValidDeliveryForm() {
 //            invalid = false;
 //        }
     }
-    
+    window.alert(isValid);
     return !isValid.includes(false);    
 }
 
@@ -205,6 +206,11 @@ function isValidExpirationDate(month,year){
         return parseInt(month,10) >= cur_month;
     } 
     return true;
+}
+
+function isValidSuiteNo(suiteNo) {
+    "use strict";
+    return /^([a-zA-Z0-9 _-]+)$/.test(suiteNo);
 }
 
 function calculateTotal(){
@@ -602,8 +608,14 @@ window.addEventListener("load", function () {
     
     for (var i = 0; i< inputs.length; i++) {
         if(isInputEmpty(inputs[i].id)) {
-            validateInput(inputs[i].id, false, inputs[i].name + " is required");
-            isInputsValid.push(false);
+            if (inputs[i].id === "bSuiteNo") {
+                isInputsValid.push(true);
+                
+            } else {
+                validateInput(inputs[i].id, false, inputs[i].name + " is required");
+                isInputsValid.push(false);
+            }
+           
         } else {
              switch(inputs[i].id) {
                     case "cardHolderName":
@@ -614,6 +626,9 @@ window.addEventListener("load", function () {
                         break;
                     case "bStAddress":
                         isInputsValid.push(isValidAddress($(inputs[i].id).value));
+                        break;
+                    case "bSuiteNo":
+                        isInputsValid.push(isValidSuiteNo($(inputs[i].id).value));
                         break;
                     case "bCity":
                         isInputsValid.push(isValidCity($(inputs[i].id).value));
