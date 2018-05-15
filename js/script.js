@@ -56,10 +56,7 @@ function validateInput(inputName, isValid, feedback) {
         }
     }  
 }
-function isValidSuiteNo(suiteNo) {
-    "use strict";
-    return /^[A-Za-z0-9 _]$/.test(suiteNo);
-}
+
 function isValidDeliveryForm() {
     "use strict";
     var isValid=[];
@@ -76,29 +73,17 @@ function isValidDeliveryForm() {
                         break;
                     case "addressType":
                         if($(arrRequired[i]).value === "other" && isInputEmpty("otherAddressType") ) {
-<<<<<<< HEAD
-                            validateInput("otherAddressType", false, $("otherAddressType").value + " is required");
-                            isValid.push(false);
-                        } else if ($(arrRequired[i]).value !== "house" && isInputEmpty("suiteno") ) {
-                            validateInput("suiteno", false, $("suiteno").value + " is required");
-                            isValid.push(false);
-                        } 
-//                        }else if {
-//                            validateInput(arrRequired[i], true, "looks good");
-//                        }
-=======
-                             validateInput("otherAddressType", false, $("otherAddressType").name + " is required");
+                            validateInput("otherAddressType", false, $("otherAddressType").name + " is required");
                             isValid.push(false);
                         } else if ($(arrRequired[i]).value !== "house" && isInputEmpty("suiteno") ) {
                              validateInput("suiteno", false, $("suiteno").name + " is required");
-                        } else if ($(arrRequired[i]).value !== "house" && isValidSuiteNo("suiteno") ) {
+                        } else if ($(arrRequired[i]).value !== "house" && !isValidSuiteNo("suiteno") ) {
                              validateInput("suiteno", false, $("suiteno").name + " is invalid");
                         }
                         else {
                             validateInput(arrRequired[i], true, "looks good");
                             validateInput("suiteno", true, "looks good");
                         }
->>>>>>> 7876f61417f8289aee2148a11e531f91846c86d0
                         break;
                     case "stAddress":
                         isValid.push(isValidAddress($(arrRequired[i]).value));
@@ -129,10 +114,6 @@ function isValidDeliveryForm() {
                 //isValid[i] ? validateInput(arrRequired[i], true, "looks good") : validateInput(arrRequired[i], false, $(arrRequired[i]).name + " is invalid");
         }
     }
-<<<<<<< HEAD
-    window.alert(isValid);
-=======
->>>>>>> 7876f61417f8289aee2148a11e531f91846c86d0
     return !isValid.includes(false);    
 }
 
