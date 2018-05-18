@@ -1,0 +1,65 @@
+.banner 
+{ 
+    margin: 0 !important; 
+    padding: 0 !important;
+/*          height: 30% !important;*/
+}
+
+.nav-link { color: tomato !important; }
+
+a:active, a:hover { color: gold !important;}
+       
+.input-group-text 
+{
+    width: 125px !important;
+}
+
+.total-text {
+    width:30px !important;
+    background-color: #28a745 !important;
+    color:white;
+    font-weight:bold;
+}
+.total {
+    width: 120px !important;
+
+}
+#total {
+    font-weight:bold;
+    color:white;
+    background-color: #28a745 !important;
+}
+#orderMessage 
+{
+    color: #dc3545;
+    font-weight: 400;
+    font-size: 30px;
+    display: inline-block;
+}
+
+blink {
+    -webkit-animation: 2s linear infinite condemned_blink_effect; /*for android*/
+    animation: 2s linear infinite condemned_blink_effect;
+}
+@-webkit-keyframes condemned_blink_effect { /*for android*/
+    0% {
+        visibility: hidden;
+    }
+    50% {
+        visibility: hidden;
+    }
+    100% {
+        visibility: visible;
+    }
+}
+@keyframes condemned_blink_effect {
+    0% {
+        visibility: hidden;
+    }
+    50% {
+        visibility: hidden;
+    }
+    100% {
+        visibility: visible;
+    }
+}
