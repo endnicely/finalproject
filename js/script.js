@@ -297,7 +297,8 @@ function isValidOrderForm() {
         return true;
     }else {
         $("orderMessage").innerHTML = '<blink>Order Your Pizza Please<img src="images/smilepizza.jpg" alt="pizzaman" width="50px"</blink>';
-         return false;
+        $("orderMessage").scrollIntoView(); 
+        return false;
     }      
 }
 
@@ -419,7 +420,6 @@ function calculateTotal(){
     var total = parseFloat((sizeCost + optCheese + optSauce + subtotalToppings).toPrecision(4));
 
     $("total").value = total;
-    $("orderMessage").innerHTML = 'Your Order Total is: <img src="images/pizzaman.png" alt="pizzaman" width="50px"/>';
 }
 
 window.addEventListener("load", function () {
@@ -519,7 +519,7 @@ window.addEventListener("load", function () {
         ReadOnlyForm("deliveryLocation", true);
         ReadOnlyForm("order", true);
         $("btnFinishBuildPizza").innerHTML = "Change Delivery Location or Order";
-        window.location.hash = "billingInfo";
+        $("billingInfo").scrollIntoView();
     });
     
     $("name").addEventListener("blur", function(e){
