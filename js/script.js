@@ -74,7 +74,7 @@ function isValidFullName(fullName) {
 function isValidAddress(address) {
     "use strict";
     //return /^[-.?!,;:() A-Za-z0-9]*$/.test(address);
-    return /\d+[ ](?:[A-Za-z0-9.-]+[ ]?)+(?:Avenue|Lane|Road|Boulevard|Drive|Street|Ave|Dr|Rd|Blvd|Ln|St)\.?/.test(address);
+    return /\d+[ ](?:[A-Za-z0-9.-]+[ ]?)+(?:Avenue|Lane|Road|Boulevard|Drive|Street|Ave|Dr|Rd|Blvd|Ln|St)\.?/i.test(address);
 }
 
 function isValidSuiteNo(suiteNo) {
@@ -84,7 +84,7 @@ function isValidSuiteNo(suiteNo) {
 
 function isValidCity(city) {
     "use strict";
-    return /(?:[A-Z][a-z.-]+[ ]?)+/.test(city);
+    return /(?:[A-Z][a-z.-]+[ ]?)+/i.test(city);
 }
 
 function isValidState(state) {
@@ -478,6 +478,7 @@ window.addEventListener("load", function () {
         }
         toggleOptions(false);
         calculateTotal();
+        $("orderMessage").innerHTML = "";
        
      });
     });
