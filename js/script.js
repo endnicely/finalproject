@@ -459,15 +459,18 @@ window.addEventListener("load", function () {
          if(e.currentTarget.value !=="") {          
             validateInput(e.currentTarget.id, true, "looks good");   
         } else {
-            validateInput(e.currentTarget.id, false, "invalid input"); 
+            validateInput(e.currentTarget.id, false, "Please choose an address type"); 
         }
         
         if(this.value === "other") {
             $("otherAddressType").previousElementSibling.style.display = "none";
             $("otherAddressType").style.display = "block";
+            validateInput("otherAddressType", false, "Please provide the address type"); 
             
         } else {
             $("otherAddressType").style.display = "none";
+           
+            validateInput("otherAddressType", true, "looks good"); 
         }
     });
    
