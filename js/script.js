@@ -251,12 +251,15 @@ function isValidDeliveryForm() {
                             isValid.push(false);
                         } else if ($(arrRequired[i]).value !== "house" && isInputEmpty("suiteno") ) {
                              validateInput("suiteno", false, $("suiteno").name + " is required");
+                             isValid.push(false);
                         } else if ($(arrRequired[i]).value !== "house" && !isValidSuiteNo("suiteno") ) {
                              validateInput("suiteno", false, $("suiteno").name + " is invalid");
+                             isValid.push(false);
                         }
                         else {
                             validateInput(arrRequired[i], true, "looks good");
                             validateInput("suiteno", true, "looks good");
+                             isValid.push(true);
                         }
                         break;
                     case "stAddress":
@@ -275,7 +278,7 @@ function isValidDeliveryForm() {
                         isValid.push(isValidUSZip($(arrRequired[i]).value));
                         isValidUSZip($(arrRequired[i]).value) ? validateInput(arrRequired[i], true, "looks good") : validateInput(arrRequired[i], false, $(arrRequired[i]).name + "is invalid");
                         break;
-                    case "phoneon":
+                    case "phoneno":
                         isValid.push(isValidPhoneNumber($(arrRequired[i]).value));
                         isValidPhoneNumber($(arrRequired[i]).value) ? validateInput(arrRequired[i], true, "looks good") : validateInput(arrRequired[i], false, $(arrRequired[i]).name + "is invalid");
                         break;
@@ -288,6 +291,7 @@ function isValidDeliveryForm() {
                 //isValid[i] ? validateInput(arrRequired[i], true, "looks good") : validateInput(arrRequired[i], false, $(arrRequired[i]).name + " is invalid");
         }
     }
+    window.alert(isValid);
     return !isValid.includes(false);    
 }
 
@@ -450,8 +454,14 @@ window.addEventListener("load", function () {
     // Disable Build Your Oder Form rest of the controls except Dough Options
     toggleOptions(true);
     
-    $("addressType").addEventListener("change", function(){
+    $("addressType").addEventListener("change", function(e){
         "use strict";
+         if(e.currentTarget.value !=="") {          
+            validateInput(e.currentTarget.id, true, "looks good");   
+        } else {
+            validateInput(e.currentTarget.id, false, "invalid input"); 
+        }
+        
         if(this.value === "other") {
             $("otherAddressType").previousElementSibling.style.display = "none";
             $("otherAddressType").style.display = "block";
@@ -525,6 +535,7 @@ window.addEventListener("load", function () {
     
     $("name").addEventListener("blur", function(e){
         "use strict";
+        e.currentTarget.value = this.value.trim();
         if(isValidFullName(e.currentTarget.value)) {
             validateInput(e.currentTarget.id, true, "looks good");   
         } else {
@@ -534,6 +545,7 @@ window.addEventListener("load", function () {
     
     $("stAddress").addEventListener("blur", function(e){
         "use strict";
+        e.currentTarget.value = this.value.trim();
         if(isValidAddress(e.currentTarget.value)) {
             validateInput(e.currentTarget.id, true, "looks good");   
         } else {
@@ -543,6 +555,7 @@ window.addEventListener("load", function () {
 
     $("suiteno").addEventListener("blur", function(e){
         "use strict";
+        e.currentTarget.value = this.value.trim();
         if(isValidSuiteNo(e.currentTarget.value)) {
             validateInput(e.currentTarget.id, true, "looks good");   
         } else {
@@ -552,6 +565,7 @@ window.addEventListener("load", function () {
     
     $("city").addEventListener("blur", function(e){
         "use strict";
+        e.currentTarget.value = this.value.trim();
         if(isValidCity(e.currentTarget.value)) {
             validateInput(e.currentTarget.id, true, "looks good");   
         } else {
@@ -561,6 +575,7 @@ window.addEventListener("load", function () {
     
     $("state").addEventListener("blur", function(e){
         "use strict";
+        e.currentTarget.value = this.value.trim();
         if(isValidState(e.currentTarget.value)) {
             validateInput(e.currentTarget.id, true, "looks good");   
         } else {
@@ -570,6 +585,7 @@ window.addEventListener("load", function () {
     
     $("zipcode").addEventListener("blur", function(e){
         "use strict";
+        e.currentTarget.value = this.value.trim();
         if(isValidUSZip(e.currentTarget.value)) {
             validateInput(e.currentTarget.id, true, "looks good");   
         } else {
@@ -579,6 +595,7 @@ window.addEventListener("load", function () {
     
     $("phoneno").addEventListener("blur", function(e){
         "use strict";
+        e.currentTarget.value = this.value.trim();
         if(isValidPhoneNumber(e.currentTarget.value)) {
             validateInput(e.currentTarget.id, true, "looks good");   
         } else {
@@ -588,6 +605,7 @@ window.addEventListener("load", function () {
     
     $("email").addEventListener("blur", function(e){
         "use strict";
+        e.currentTarget.value = this.value.trim();
         if(isValidEmail(e.currentTarget.value)) {
             validateInput(e.currentTarget.id, true, "looks good");   
         } else {
@@ -598,17 +616,33 @@ window.addEventListener("load", function () {
     $("sameAsDeli").addEventListener("click", function(){
         "use strict";
         if(this.checked) {
+           // disable those inputs which same as deilvery information
            $("cardHolderName").value = $("name").value;
+           $("cardHolderName").readOnly = true;
            $("bStAddress").value = $("stAddress").value;
+           $("bStAddress").readOnly = true;
            $("bSuiteNo").value = $("suiteno").value;
+           $("bSuiteNo").readOnly = true;
            $("bCity").value = $("city").value;
+           $("bCity").readOnly = true;
            $("bState").value = $("state").value;
-           $("bZipCode").value = $("zipcode").value; 
+           $("bState").readOnly = true;
+           $("bZipCode").value = $("zipcode").value;
+           $("bZipCode").readOnly = true;
+        }
+        else {
+           $("cardHolderName").readOnly = false;
+           $("bStAddress").readOnly = false;
+           $("bSuiteNo").readOnly = false;
+           $("bCity").readOnly = false;
+           $("bState").readOnly = false;
+           $("bZipCode").readOnly = false;
         }
     });
     
     $("cardHolderName").addEventListener("blur", function(e){
         "use strict";
+        e.currentTarget.value = this.value.trim();
         if(isValidFullName(e.currentTarget.value)) {
             validateInput(e.currentTarget.id, true, "looks good");   
         } else {
@@ -618,6 +652,7 @@ window.addEventListener("load", function () {
     
     $("bStAddress").addEventListener("blur", function(e){
         "use strict";
+        e.currentTarget.value = this.value.trim();
         if(isValidAddress(e.currentTarget.value)) {
             validateInput(e.currentTarget.id, true, "looks good");   
         } else {
@@ -627,6 +662,7 @@ window.addEventListener("load", function () {
     
     $("bSuiteNo").addEventListener("blur", function(e){
         "use strict";
+        e.currentTarget.value = this.value.trim();
         if(isValidSuiteNo(e.currentTarget.value)) {
             validateInput(e.currentTarget.id, true, "looks good");   
         } else {
@@ -636,6 +672,7 @@ window.addEventListener("load", function () {
     
     $("bCity").addEventListener("blur", function(e){
         "use strict";
+        e.currentTarget.value = this.value.trim();
         if(isValidCity(e.currentTarget.value)) {
             validateInput(e.currentTarget.id, true, "looks good");   
         } else {
@@ -645,6 +682,7 @@ window.addEventListener("load", function () {
     
     $("bState").addEventListener("blur", function(e){
         "use strict";
+        e.currentTarget.value = this.value.trim();
         if(isValidState(e.currentTarget.value)) {
             validateInput(e.currentTarget.id, true, "looks good");   
         } else {
@@ -654,6 +692,7 @@ window.addEventListener("load", function () {
     
     $("bZipCode").addEventListener("blur", function(e){
         "use strict";
+        e.currentTarget.value = this.value.trim();
         if(isValidUSZip(e.currentTarget.value)) {
             validateInput(e.currentTarget.id, true, "looks good");   
         } else {
@@ -663,6 +702,7 @@ window.addEventListener("load", function () {
    
     $("cvv").addEventListener("blur", function(e){
         "use strict";
+        e.currentTarget.value = this.value.trim();
         if(isValidCVV(e.currentTarget.value)) {
             validateInput(e.currentTarget.id, true, "looks good");   
         } else {
@@ -715,6 +755,7 @@ window.addEventListener("load", function () {
     
     $("cardNumber").addEventListener("keyup",function(e){
        "use strict";
+       e.currentTarget.value = this.value.trim();
        var cardNo = e.currentTarget.value;
        var creditCardInputId = e.currentTarget.id;
        if (isNotNum(cardNo)) {
