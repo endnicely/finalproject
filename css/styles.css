@@ -1,5 +1,4 @@
-.banner 
-{ 
+.banner { 
     margin: 0 !important; 
     padding: 0 !important;
 }
@@ -8,10 +7,8 @@
 
 a:active, a:hover { color: gold !important;}
        
-.input-group-text 
-{
-    width: 125px !important;
-    
+.input-group-text {
+    width: 125px !important;   
 }
 
 .total-text {
@@ -22,7 +19,6 @@ a:active, a:hover { color: gold !important;}
 }
 .total {
     width: 250px !important;
-
 }
 
 #total {
@@ -31,12 +27,15 @@ a:active, a:hover { color: gold !important;}
     background-color: #28a745 !important;
 }
 
-#orderMessage 
-{
+#orderMessage {
     color: #dc3545;
     font-weight: 400;
     font-size: 30px;
     display: inline-block;
+}
+
+#billingInfo {
+    margin-bottom: 10px;
 }
 
 blink {

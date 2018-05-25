@@ -45,7 +45,7 @@ function validateInput(inputName, isValid, feedback) {
           $(inputName).nextElementSibling.classList.add(addClass_feedback);
           $(inputName).nextElementSibling.innerHTML = feedback;
         }
-    }else{
+    }else{ /*neutral status*/
         $(inputName).classList.remove("is-invalid");
         $(inputName).classList.remove("is-valid");
         if($(inputName).nextElementSibling.nodeName !== "DIV") {      
@@ -118,7 +118,7 @@ function isValidCVV(cvv) {
     return /^[0-9]{3,4}$/.test(cvv);
 }
 
-function isValidExpirationDate(month,year){
+function isValidExpirationDate(month,year) {
     "use strict";
     var cur_year = new Date().getFullYear();
 
@@ -129,7 +129,7 @@ function isValidExpirationDate(month,year){
     return true;
 }
 
-function isCardNoValidPrefix(cardNo){
+function isCardNoValidPrefix(cardNo) {
     "use strict";
     if(cardNo!==""){
         var valid1stDigits = ["4","5","3"];
@@ -216,7 +216,7 @@ function isValidCreditCard(value) {
     return (nCheck % 10) == 0;
 }
     
-function creditCardType(cardNo){
+function creditCardType(cardNo) {
     "use strict";
     switch(cardNo.substr(0,1)) {
         case "4":
@@ -289,7 +289,7 @@ function isValidDeliveryForm() {
                 }
         }
     }
-    //window.alert(isValid);
+    
     return !isValid.includes(false);    
 }
 
@@ -308,7 +308,7 @@ function isValidBillingForm() {
     "use strict";
     var isInputsValid = [], isSelectsValid = [];
     var inputs = document.forms["billingInfo"].querySelectorAll("input[type=text]");
-    
+    // validate input fields in Billing Form
     for (var i = 0; i< inputs.length; i++) {
         if(isInputEmpty(inputs[i].id)) {
             if (inputs[i].id === "bSuiteNo") {
@@ -350,9 +350,9 @@ function isValidBillingForm() {
             isInputsValid[i] ? validateInput(inputs[i].id, true, "looks good") : validateInput(inputs[i].id, false, inputs[i].name + " is invalid");
         }
     }
-     
-    var selects = document.forms["billingInfo"].getElementsByTagName('select'); 
+    //validate expiration date
     var message="";
+    var selects = document.forms["billingInfo"].getElementsByTagName('select'); 
     for (var j = 0; j< selects.length; j++) {
         if(isInputEmpty(selects[j].id)) {
             isSelectsValid.push(false);
@@ -360,23 +360,21 @@ function isValidBillingForm() {
             validateInput(selects[j].id, false, message + "is required");
         } else {
            if(j !== 0) {
-               isSelectsValid.push(isValidExpirationDate(selects[j-1],selects[j]));
-           }  
+               isSelectsValid.push(isValidExpirationDate(selects[j-1].value,selects[j].value));
+           }
         }
-        isSelectsValid[i] ? validateInput(selects[j].id, true, "looks good") : validateInput(selects[j].id, false, selects[j].name + " is invalid");
-    }
         
+    }
     return !isInputsValid.includes(false) &&  !isSelectsValid.includes(false);
           
 }
 
-function showHint(cardNo, creditCardInputId){
+function showHint(cardNo, creditCardInputId) {
     "use strict";
     var cardNoLength = cardNo.length;
     switch(creditCardType(cardNo)) {
         case "Visa":
             if (cardNoLength < 16 && cardNoLength !=13) {
-                //return  validateInput(creditCardInputId, "unknown", "Valid number of digits for Visa is 13 or 16");
                 return  validateInput(creditCardInputId, false, "Valid number of digits for Visa is 13 or 16");
             } else if (cardNoLength > 16) {
                 return  validateInput(creditCardInputId, false, "Your Visa contains more than 16 digits which is invalid.");
@@ -384,7 +382,6 @@ function showHint(cardNo, creditCardInputId){
             break;
         case "Master":
             if (cardNoLength < 16) {
-                //return  validateInput(creditCardInputId,"unknown", "Valid number of digits for Maseter Card is 16");
                 return  validateInput(creditCardInputId, false, "Valid number of digits for Maseter Card is 16");
             } else if (cardNo.length > 16) {
                 return  validateInput(creditCardInputId, false, "Your Master Card contains more than 16 digits which is invalid.");
@@ -392,7 +389,6 @@ function showHint(cardNo, creditCardInputId){
             break;
         case "American Express":       
             if (cardNoLength < 15) {
-                //return  validateInput(creditCardInputId, "unknown", "Valid number of digits for American Express is 15"); 
                 return  validateInput(creditCardInputId, false, "Valid number of digits for American Express is 15");
 
             } else if (cardNo.length > 15) {
@@ -404,7 +400,7 @@ function showHint(cardNo, creditCardInputId){
     }
 }
 
-function calculateTotal(){
+function calculateTotal() {
     "use strict";
     
     var count = 0;
@@ -507,16 +503,18 @@ window.addEventListener("load", function () {
                 $("otherAddressType").nextElementSibling.style.display = "block";
                 validateInput(e.currentTarget.id, true, "");
                 validateInput("otherAddressType", false, "Please provide the address type"); 
-
+                validateInput("suiteno", "", ""); 
             } else {
                  $("otherAddressType").previousElementSibling.style.display = "block";
                  $("otherAddressType").style.display = "none";
                  $("otherAddressType").nextElementSibling.style.display = "none";
-                 //validateInput("otherAddressType", "", "");
                 
                  //  Only house and other Address Type don't need suite no
                  if (this.value !== "house") {
                     validateInput("suiteno", false, "Suite Number is required for Address Type: " + $("addressType").value); 
+                 }
+                 else {
+                     validateInput("suiteno", "", "");
                  }
                  validateInput(e.currentTarget.id, true, "looks good");
             }
@@ -625,7 +623,7 @@ window.addEventListener("load", function () {
     //Delivery Form and Order Form Confirmation and Checkout
     $("btnFinishBuildPizza").addEventListener("click",function(e) {
         "use strict";
-        if (this.innerHTML.trim() === "Finished Building Pizza"){
+        if (this.innerHTML.trim() === "Finished Building Pizza") {
             if((!isValidDeliveryForm()) || (!isValidOrderForm())) {
                 e.stopImmediatePropagation();     
             }
@@ -639,7 +637,7 @@ window.addEventListener("load", function () {
       
     });
     
-    $("proceedToCheckout").addEventListener("click", function(){
+    $("proceedToCheckout").addEventListener("click", function() {
         "use strict";
         $("Confirmation_buildingPizza").style.display = "none";
         $("billingInfo").style.display = "block";
@@ -650,7 +648,7 @@ window.addEventListener("load", function () {
     });
     
     // Billing Form event listeners
-    $("sameAsDeli").addEventListener("click", function(){
+    $("sameAsDeli").addEventListener("click", function() {
         "use strict";
         if(this.checked) {
            // disable those inputs which same as deilvery information
@@ -677,7 +675,7 @@ window.addEventListener("load", function () {
         }
     });
     
-    $("cardHolderName").addEventListener("blur", function(e){
+    $("cardHolderName").addEventListener("blur", function(e) {
         "use strict";
         e.currentTarget.value = this.value.trim();
         if(isValidFullName(e.currentTarget.value)) {
@@ -687,7 +685,7 @@ window.addEventListener("load", function () {
         }
     });
     
-    $("bStAddress").addEventListener("blur", function(e){
+    $("bStAddress").addEventListener("blur", function(e) {
         "use strict";
         e.currentTarget.value = this.value.trim();
         if(isValidAddress(e.currentTarget.value)) {
@@ -697,7 +695,7 @@ window.addEventListener("load", function () {
         }
     });
     
-    $("bSuiteNo").addEventListener("blur", function(e){
+    $("bSuiteNo").addEventListener("blur", function(e) {
         "use strict";
         e.currentTarget.value = this.value.trim();
         if(isValidSuiteNo(e.currentTarget.value)) {
@@ -707,7 +705,7 @@ window.addEventListener("load", function () {
         }
     });
     
-    $("bCity").addEventListener("blur", function(e){
+    $("bCity").addEventListener("blur", function(e) {
         "use strict";
         e.currentTarget.value = this.value.trim();
         if(isValidCity(e.currentTarget.value)) {
@@ -717,7 +715,7 @@ window.addEventListener("load", function () {
         }
     });
     
-    $("bState").addEventListener("blur", function(e){
+    $("bState").addEventListener("blur", function(e) {
         "use strict";
         e.currentTarget.value = this.value.trim();
         if(isValidState(e.currentTarget.value)) {
@@ -727,7 +725,7 @@ window.addEventListener("load", function () {
         }
     });
     
-    $("bZipCode").addEventListener("blur", function(e){
+    $("bZipCode").addEventListener("blur", function(e) {
         "use strict";
         e.currentTarget.value = this.value.trim();
         if(isValidUSZip(e.currentTarget.value)) {
@@ -737,7 +735,7 @@ window.addEventListener("load", function () {
         }
     });
    
-    $("cvv").addEventListener("blur", function(e){
+    $("cvv").addEventListener("blur", function(e) {
         "use strict";
         e.currentTarget.value = this.value.trim();
         if(isValidCVV(e.currentTarget.value)) {
@@ -749,21 +747,21 @@ window.addEventListener("load", function () {
     
     $("expiryMonth").addEventListener("blur", function(e){
          "use strict";
-         if (isInputEmpty(e.currentTarget.id) && isInputEmpty("expiryYear")){
+         if (isInputEmpty(e.currentTarget.id) && isInputEmpty("expiryYear")) {
             validateInput(e.currentTarget.id, false, "Please select a month and a year");
             validateInput("expiryYear", false, "Please select a month and a year");
          } else if (isInputEmpty(e.currentTarget.id)) {
-            validateInput("expiryYear", "unknown", "");
-            validateInput(e.currentTarget.id, false, "Please select a month");         
+            validateInput("expiryYear", "", "");
+            validateInput(e.currentTarget.id, false, "Please select a month");        
          } else if (isInputEmpty("expiryYear")) {
             validateInput("expiryYear", false, "");
-            validateInput(e.currentTarget.id, "unknown", "Please select a year");
+            validateInput(e.currentTarget.id, "", "Please select a year");
          } else if (isValidExpirationDate(e.currentTarget.value, $("expiryYear").value)) {
-             validateInput("expiryMonth", true, "looks good"); 
-             validateInput("expiryYear", true, "looks good"); 
+             validateInput("expiryMonth", true, "looks good");
+             validateInput("expiryYear", true, "looks good");
          } else {
             validateInput("expiryMonth", false, "Your card is expired");
-            validateInput("expiryYear", false, "Your card is expired"); 
+            validateInput("expiryYear", false, "Your card is expired");
          }
 
     });
@@ -774,19 +772,19 @@ window.addEventListener("load", function () {
             validateInput(e.currentTarget.id, false, "Please select a month and a year");
             validateInput("expiryMonth", false, "Please select a month and a year");
          } else if (isInputEmpty(e.currentTarget.id)) {
-            validateInput(e.currentTarget.id, false, "");
-            validateInput("expiryMonth", "unknown", "Please select a year");
-            //validateInput(e.currentTarget.id, false, "Please select a year");
+            //window.alert("here");
+            validateInput("expiryMonth", "", "");
+            validateInput(e.currentTarget.id, false, "Please select a year");
+           
          } else if (isInputEmpty("expiryMonth")) {
-            validateInput(e.currentTarget.id, "unknown", "");
-            validateInput("expiryMonth", false, "Please select a month");     
-            //validateInput(e.currentTarget.id, false, "Please select a month");
+            validateInput(e.currentTarget.id, "", "");
+            validateInput("expiryMonth", false, "Please select a month");
          } else if (isValidExpirationDate($("expiryMonth").value, e.currentTarget.value)) {
-             validateInput("expiryMonth", true, "looks good"); 
-             validateInput("expiryYear", true, "looks good"); 
+             validateInput("expiryMonth", true, "looks good");
+             validateInput("expiryYear", true, "looks good");
          } else {
-            validateInput("expiryMonth", false, "Your card is expired"); 
-            validateInput("expiryYear", false, "Your card is expired");       
+            validateInput("expiryMonth", false, "Your card is expired");
+            validateInput("expiryYear", false, "Your card is expired");
          }
     });
     

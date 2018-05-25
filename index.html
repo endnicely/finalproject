@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <title>Joy Peace Pizza</title>
+  <title>Joy Peace Pizza - Place Order</title>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <link rel="icon" href="images/favicons/favicon-16x16.png">
@@ -11,13 +11,6 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.0/umd/popper.min.js"></script>
   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.0/js/bootstrap.min.js"></script>
   <script src="js/script.js"></script>
-  
-<!--
-  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
-  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
-  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
--->
- 
 </head>
 <body>
 
@@ -46,10 +39,9 @@
 </nav>
 
 <div class="container" style="margin-top:30px">
-  <div class="row">
+  <div class="row"><!--begin of <div class="row"> for Order Total-->
          <div class="col-sm-6">
-         </div>
-         
+         </div>       
          <div class="col-sm-5">
              <div class="form-group">
                 <div class="input-group mb-3 total">
@@ -59,11 +51,11 @@
                   <input type="text" class="form-control" id="total" aria-label="Amount (to the nearest dollar)" readonly>           
                 </div>
             </div>
-        </div> <!--end of  <div class="col-sm-6"> pull-left float-left-->
+        </div>
         <div class="col-sm-1"> 
             <img src="images/pizzaman.png" alt="pizzaman" width="45px" />
-         </div>
-  </div>  <!--end of  <div class="row"> -->
+        </div>
+  </div>  <!--end of <div class="row"> for Order Total-->
   <div class="row"> 
     <!-- Delivery Location -->
     <div class="col-sm-6">
@@ -97,7 +89,6 @@
               <div class="">
               </div>
             </div>
-
             <div class="input-group mb-3">
                 <div class="input-group-prepend">
                     <span class="input-group-text" id="stAddress-addon">Street Address</span>
@@ -119,7 +110,7 @@
                     <span class="input-group-text" id="city-addon">City</span>
                 </div>
                 <input type="text" class="form-control" id="city" name="City" aria-describedby="city-addon" placeholder="City">
-                <div class="">
+                <div class="">  <!--validation message block-->
                 </div>
             </div>
             <div class="input-group mb-3">
@@ -127,7 +118,7 @@
                     <span class="input-group-text" id="state-addon">State</span>
                 </div>
                 <input type="text" class="form-control" id="state" name="State" aria-describedby="state-addon" placeholder="State">
-                <div class="">
+                <div class="">  <!--validation message block-->
                 </div>
             </div>
             <div class="input-group mb-3">
@@ -143,7 +134,7 @@
                     <span class="input-group-text" id="phoneno-addon">Phone Number</span>
                 </div>
                 <input type="tel" class="form-control" id="phoneno" name="Phone Number" aria-describedby="phoneno-addon" placeholder="Phone Number">
-                <div class="">
+                <div class="">  <!--validation message block-->
                 </div>
             </div>
             <div class="input-group mb-3">
@@ -151,7 +142,7 @@
                     <span class="input-group-text" id="phoneno-addon">Email</span>
                 </div>               
                 <input type="email" class="form-control" id="email" name="Email" aria-describedby="email-addon" placeholder="Email">
-                <div class="">
+                <div class="">  <!--validation message block-->
                 </div>
             </div>
         </form> 
@@ -321,35 +312,34 @@
   </fieldset>
   <!-- Modal -->
   <div class="modal fade" id="Confirmation_buildingPizza" tabindex="-1" role="dialog" aria-labelledby="modalTitle" aria-hidden="true">
-  <div class="modal-dialog modal-dialog-centered" role="document">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title" id="modalTitle">Finished Building Pizza Confirmation</h5>
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-          <span aria-hidden="true">&times;</span>
-        </button>
-      </div>
-      <div class="modal-body">
-        Did you finish build your pizza and ready to checkout?
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
-          <button type="button" class="btn btn-primary" id="proceedToCheckout" data-dismiss="modal">OK</button>
-      </div>
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="modalTitle">Finished Building Pizza Confirmation</h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div class="modal-body">
+            Did you finish build your pizza and ready to checkout?
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+            <button type="button" class="btn btn-primary" id="proceedToCheckout" data-dismiss="modal">OK</button>
+          </div>
+        </div>
     </div>
   </div>
-</div>
   <form id="billingInfo">
-  <div class="row">
-   
+  <div class="row"> 
     <!-- Billing Information -->
     <label class="control-label" for="billingInfo"><h3>Billing Information</h3></label>
     <div class="col-sm-12">
         <div class="form-group form-check">
-              <label class="form-check-label">
-                <input type="checkbox" id="sameAsDeli" value="sameAsDeli">&nbsp;Same as delivery information
-              </label>
-            </div>
+          <label class="form-check-label">
+            <input type="checkbox" id="sameAsDeli" value="sameAsDeli">&nbsp;Same as delivery information
+          </label>
+        </div>
     </div>      
     <div class="col-sm-6">           
         <div class="input-group mb-3">
@@ -357,7 +347,7 @@
                 <span class="input-group-text" id="bStAddress-addon">Street Address</span>
             </div>
             <input type="text"  id="bStAddress" name="Street Address" class="form-control" placeholder="Street Address" aria-label="Street Address" aria-describedby="bStAddress-addon">
-            <div class="">
+            <div class="">  <!--validation message block-->
             </div> 
         </div>
         <div class="input-group mb-3">
@@ -365,7 +355,7 @@
                 <span class="input-group-text" id="bSuiteNo-addon">Suite Number</span>
             </div>
             <input type="text"  id="bSuiteNo" name="Suite Number" class="form-control" placeholder="optional apartment number, suite, or room number" aria-label="Suite Number" aria-describedby="bSuiteNo-addon">
-            <div class="">
+            <div class="">  <!--validation message block-->
             </div>              
         </div>
         <div class="input-group mb-3">
@@ -373,7 +363,7 @@
                 <span class="input-group-text" id="bCity-addon">City</span>
             </div>
             <input type="text"  id="bCity" name="City" class="form-control" placeholder="City" aria-label="City" aria-describedby="bCity-addon">
-            <div class="">
+            <div class="">  <!--validation message block-->
             </div>      
         </div>
         <div class="input-group mb-3">
@@ -381,7 +371,7 @@
             <span class="input-group-text" id="bState-addon">State</span>
           </div>
           <input type="text" id="bState" name="State" class="form-control" placeholder="State" aria-label="State" aria-describedby="bState-addon">
-          <div class="">
+          <div class="">  <!--validation message block-->
           </div>     
         </div>
         <div class="input-group mb-3">
@@ -389,25 +379,25 @@
             <span class="input-group-text" id="bZipCode-addon">Zip Code</span>
           </div>
           <input type="text"  id="bZipCode" name="Zip Code" class="form-control" placeholder="Zip Code" aria-label="Zip Code" aria-describedby="bZipCode-addon">
-          <div class="">
+          <div class="">  <!--validation message block-->
           </div>
         </div>
     </div>
     <div class="col-sm-6">
         <div class="input-group mb-3">
-                <div class="input-group-prepend">
-                    <span class="input-group-text" id="cardHolderName-addon">Name on Card</span>
-                </div>
-                <input type="text"  id="cardHolderName" name="Card Holder's Full Name" class="form-control" placeholder="Card Holder's Name" aria-label="Card Holder's Name" aria-describedby="cardHolderName-addon">
-                <div class="">
-                </div>
-              </div>
+            <div class="input-group-prepend">
+                <span class="input-group-text" id="cardHolderName-addon">Name on Card</span>
+            </div>
+            <input type="text"  id="cardHolderName" name="Card Holder's Full Name" class="form-control" placeholder="Card Holder's Name" aria-label="Card Holder's Name" aria-describedby="cardHolderName-addon">
+            <div class="">   <!--validation message block-->
+            </div>
+        </div>
         <div class="input-group mb-3">
             <div class="input-group-prepend">
                 <span class="input-group-text" id="cardNumber-addon">Card Number</span>
             </div>
             <input type="text" id="cardNumber" name="Credit Card Number" class="form-control" placeholder="Debit/Credit Card Number" aria-label="Debit/Credit Card Number" aria-describedby="cardNumber-addon">
-            <div class="">
+            <div class="">  <!--validation message block-->
             </div>           
         </div>
         <div class="input-group mb-3">
@@ -443,7 +433,7 @@
                 <option value="2027">2027</option>
                 <option value="2028">2028</option>
             </select>
-            <div class="">
+            <div class="">  <!--validation message block-->
             </div>      
         </div>
         <div class="input-group mb-3">
@@ -451,14 +441,13 @@
                 <span class="input-group-text" id="cvv-addon">Card CVV</span>
             </div>
             <input type="text"  id="cvv" name="Card CVV Security Code" class="form-control" placeholder="Security Code" aria-label="Card CVV" aria-describedby="cvv-addon">
-            <div class="">
+            <div class="">  <!--validation message block-->
             </div>      
         </div>
             <div class="form-group">
-                  <button type="button" id="btnPay" class="btn btn-success float-right"><strong>Pay Now</strong></button> 
-              </div>           
-      </div>
-      
+              <button type="button" id="btnPay" class="btn btn-success float-right"><strong>Pay Now</strong></button> 
+            </div>           
+      </div>   
   </div>
   </form>
 </div>
