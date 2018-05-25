@@ -2,7 +2,6 @@
 { 
     margin: 0 !important; 
     padding: 0 !important;
-/*          height: 30% !important;*/
 }
 
 .nav-link { color: tomato !important; }
@@ -16,22 +15,22 @@ a:active, a:hover { color: gold !important;}
 }
 
 .total-text {
-/*    width:30px !important;*/
-    width:180px !important;
+    width:175px !important;
     background-color: #28a745 !important;
     color:white;
     font-weight:bold;
 }
 .total {
-/*    width: 120px !important;*/
     width: 250px !important;
 
 }
+
 #total {
     font-weight:bold;
     color:white;
     background-color: #28a745 !important;
 }
+
 #orderMessage 
 {
     color: #dc3545;
@@ -44,6 +43,7 @@ blink {
     -webkit-animation: 2s linear infinite condemned_blink_effect; /*for android*/
     animation: 2s linear infinite condemned_blink_effect;
 }
+
 @-webkit-keyframes condemned_blink_effect { /*for android*/
     0% {
         visibility: hidden;

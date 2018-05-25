@@ -26,10 +26,10 @@ function ReadOnlyForm(formId, isReadOnly) {
     }
 }
 
-//utility function
+//utility function - show green or red for input borders based on the validation
 function validateInput(inputName, isValid, feedback) {
     "use strict";
-    if(isValid!=="unknown"){
+    if(isValid!==""){
         var removeClass = isValid ? "is-invalid" : "is-valid";
         var addClass = isValid ? "is-valid" : "is-invalid";
         var removeClass_feedback = isValid ? "invalid-feedback" : "valid-feedback";
@@ -96,7 +96,6 @@ function isValidState(state) {
 function isValidUSZip(sZip) {
     "use strict";
     return /^\d{5}(-\d{4})?$/.test(sZip);
-    //\b\d{5}(?:-\d{4})?\b
 }
 
 function isValidPhoneNumber(phoneNo) {
@@ -249,7 +248,7 @@ function isValidDeliveryForm() {
                         if($(arrRequired[i]).value === "other" && isInputEmpty("otherAddressType") ) {
                             validateInput("otherAddressType", false, $("otherAddressType").name + " is required");
                             isValid.push(false);
-                        } else if ($(arrRequired[i]).value !== "house" && isInputEmpty("suiteno") ) {
+                        } else if ($(arrRequired[i]).value !== "house" && $(arrRequired[i]).value !== "other" && isInputEmpty("suiteno") ) {
                              validateInput("suiteno", false, $("suiteno").name + " is required");
                              isValid.push(false);
                         } else if ($(arrRequired[i]).value !== "house" && !isValidSuiteNo("suiteno") ) {
@@ -288,10 +287,9 @@ function isValidDeliveryForm() {
                         break;
                     default:
                 }
-                //isValid[i] ? validateInput(arrRequired[i], true, "looks good") : validateInput(arrRequired[i], false, $(arrRequired[i]).name + " is invalid");
         }
     }
-    window.alert(isValid);
+    //window.alert(isValid);
     return !isValid.includes(false);    
 }
 
@@ -454,38 +452,16 @@ window.addEventListener("load", function () {
     // Disable Build Your Oder Form rest of the controls except Dough Options
     toggleOptions(true);
     
-    $("addressType").addEventListener("change", function(e){
-        "use strict";
-         if(e.currentTarget.value !=="") {          
-            validateInput(e.currentTarget.id, true, "looks good");   
-        } else {
-            validateInput(e.currentTarget.id, false, "Please choose an address type"); 
-        }
-        
-        if(this.value === "other") {
-            $("otherAddressType").previousElementSibling.style.display = "none";
-            $("otherAddressType").style.display = "block";
-            validateInput("otherAddressType", false, "Please provide the address type"); 
-            
-        } else {
-            $("otherAddressType").style.display = "none";
-           
-            validateInput("otherAddressType", true, "looks good"); 
-        }
-    });
-   
+   //Order Form input fields event listeners
     optdoughItems.forEach(function (item) {
         "use strict";
         item.addEventListener('change',function(){
       
         var selectedDough = doughSizePrize[item.id];
-        //window.alert(selectedDough.length);
         $('sizeCost').innerHTML = null;
         for(var i = 0; i < selectedDough.length; i++) {
-            //var opt = doughSizePrize[item.id][i];
             var el = document.createElement("option");
             el.textContent = selectedDough[i].size +  " (" + selectedDough[i].price + ")";
-            //el.value = selectedDough[i].size +  selectedDough[i].price;
             el.value = selectedDough[i].price.substr(1);
             $('sizeCost').appendChild(el);
         }
@@ -510,32 +486,8 @@ window.addEventListener("load", function () {
         });
     });
     
-    $("btnFinishBuildPizza").addEventListener("click",function(e) {
-        "use strict";
-        if (this.innerHTML.trim() === "Finished Building Pizza"){
-            if((!isValidDeliveryForm()) || (!isValidOrderForm())) {
-                e.stopImmediatePropagation();     
-            }
-        }else{
-             $("billingInfo").style.display = "none";
-             ReadOnlyForm("deliveryLocation", false);
-             ReadOnlyForm("order", false);
-             $("btnFinishBuildPizza").innerHTML = "Finished Building Pizza";
-             e.stopImmediatePropagation();
-        }
-      
-    });
     
-    $("proceedToCheckout").addEventListener("click", function(){
-        "use strict";
-        $("Confirmation_buildingPizza").style.display = "none";
-        $("billingInfo").style.display = "block";
-        ReadOnlyForm("deliveryLocation", true);
-        ReadOnlyForm("order", true);
-        $("btnFinishBuildPizza").innerHTML = "Change Delivery Location or Order";
-        $("billingInfo").scrollIntoView();
-    });
-    
+    //Delivery Form input fields event listeners
     $("name").addEventListener("blur", function(e){
         "use strict";
         e.currentTarget.value = this.value.trim();
@@ -543,6 +495,46 @@ window.addEventListener("load", function () {
             validateInput(e.currentTarget.id, true, "looks good");   
         } else {
             validateInput(e.currentTarget.id, false, "invalid input"); 
+        }
+    });
+    
+    $("addressType").addEventListener("change", function(e){
+        "use strict";
+         if(e.currentTarget.value !=="") {
+            if(this.value === "other") {
+                $("otherAddressType").previousElementSibling.style.display = "none";
+                $("otherAddressType").style.display = "block";
+                $("otherAddressType").nextElementSibling.style.display = "block";
+                validateInput(e.currentTarget.id, true, "");
+                validateInput("otherAddressType", false, "Please provide the address type"); 
+
+            } else {
+                 $("otherAddressType").previousElementSibling.style.display = "block";
+                 $("otherAddressType").style.display = "none";
+                 $("otherAddressType").nextElementSibling.style.display = "none";
+                 //validateInput("otherAddressType", "", "");
+                
+                 //  Only house and other Address Type don't need suite no
+                 if (this.value !== "house") {
+                    validateInput("suiteno", false, "Suite Number is required for Address Type: " + $("addressType").value); 
+                 }
+                 validateInput(e.currentTarget.id, true, "looks good");
+            }
+           
+        } else {
+            //Choose ... is selected
+            $("otherAddressType").style.display = "none";
+            validateInput(e.currentTarget.id, false, "Please choose an address type");
+        }
+        
+    });
+    
+     $("otherAddressType").addEventListener("change", function(e){
+        "use strict";
+         if(e.currentTarget.value !=="") {          
+            validateInput(e.currentTarget.id, true, "looks good");   
+        } else {
+            validateInput(e.currentTarget.id, false, "Please provide an address type"); 
         }
     });
     
@@ -559,11 +551,25 @@ window.addEventListener("load", function () {
     $("suiteno").addEventListener("blur", function(e){
         "use strict";
         e.currentTarget.value = this.value.trim();
-        if(isValidSuiteNo(e.currentTarget.value)) {
-            validateInput(e.currentTarget.id, true, "looks good");   
-        } else {
-            validateInput(e.currentTarget.id, false, "invalid input"); 
+        if($("addressType").value !== "" && $("addressType").value !== "house" && $("addressType").value !== "other" ) {
+            if (e.currentTarget.value === "") {
+                validateInput(e.currentTarget.id, false, "Suite Number is required for Address Type: " + $("addressType").value); 
+            } else {
+                if(isValidSuiteNo(e.currentTarget.value)) {
+                    validateInput(e.currentTarget.id, true, "looks good");   
+                } else {
+                    validateInput(e.currentTarget.id, false, "invalid input"); 
+                }
+            }
+            
+        }else{
+            if(isValidSuiteNo(e.currentTarget.value)) {
+                validateInput(e.currentTarget.id, "", "");   
+            } else {
+                validateInput(e.currentTarget.id, false, "invalid input"); 
+            }
         }
+        
     });
     
     $("city").addEventListener("blur", function(e){
@@ -578,7 +584,7 @@ window.addEventListener("load", function () {
     
     $("state").addEventListener("blur", function(e){
         "use strict";
-        e.currentTarget.value = this.value.trim();
+        e.currentTarget.value = this.value.trim().toUpperCase();
         if(isValidState(e.currentTarget.value)) {
             validateInput(e.currentTarget.id, true, "looks good");   
         } else {
@@ -616,6 +622,34 @@ window.addEventListener("load", function () {
         }
     });
     
+    //Delivery Form and Order Form Confirmation and Checkout
+    $("btnFinishBuildPizza").addEventListener("click",function(e) {
+        "use strict";
+        if (this.innerHTML.trim() === "Finished Building Pizza"){
+            if((!isValidDeliveryForm()) || (!isValidOrderForm())) {
+                e.stopImmediatePropagation();     
+            }
+        }else{
+             $("billingInfo").style.display = "none";
+             ReadOnlyForm("deliveryLocation", false);
+             ReadOnlyForm("order", false);
+             $("btnFinishBuildPizza").innerHTML = "Finished Building Pizza";
+             e.stopImmediatePropagation();
+        }
+      
+    });
+    
+    $("proceedToCheckout").addEventListener("click", function(){
+        "use strict";
+        $("Confirmation_buildingPizza").style.display = "none";
+        $("billingInfo").style.display = "block";
+        ReadOnlyForm("deliveryLocation", true);
+        ReadOnlyForm("order", true);
+        $("btnFinishBuildPizza").innerHTML = "Change Delivery Location or Order";
+        $("billingInfo").scrollIntoView();
+    });
+    
+    // Billing Form event listeners
     $("sameAsDeli").addEventListener("click", function(){
         "use strict";
         if(this.checked) {
@@ -781,6 +815,7 @@ window.addEventListener("load", function () {
        }                            
     });
     
+    // Read to Pay
     $("btnPay").addEventListener("click", function(){
         "use strict";
         if (isValidBillingForm()) {
